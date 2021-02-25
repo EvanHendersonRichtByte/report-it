@@ -1,0 +1,4 @@
+{
+  "devPort": 2021,
+  "mongodbURI": "mongodb+srv://evanhenderson:<password>@report-it.jlmni.mongodb.net/myFirstDatabase?retryWrites=true&w=majority"
+}

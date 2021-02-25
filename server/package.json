@@ -1,0 +1,26 @@
+{
+  "name": "server",
+  "version": "1.0.0",
+  "description": "backend for report-it app",
+  "main": "server.js",
+  "scripts": {
+    "test": "test",
+    "start": "concurrently \"npm run start:server\" \"npm run start:client\"",
+    "start:server": "nodemon server",
+    "start:client": "npm start --prefix ../client"
+  },
+  "keywords": [
+    "backend",
+    "server"
+  ],
+  "author": "Evan Henderson",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.17.1",
+    "mongoose": "^5.11.18"
+  },
+  "devDependencies": {
+    "concurrently": "^6.0.0",
+    "nodemon": "^2.0.7"
+  }
+}
