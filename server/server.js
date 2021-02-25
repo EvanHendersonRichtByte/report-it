@@ -1,4 +1,4 @@
-const { devPort, mongodbURI } = require("./config.json"),
+let { devPort, mongodbURI } = require("./config.json"),
   mongoose = require("mongoose"),
   express = require("express"),
   app = express();
@@ -15,6 +15,10 @@ mongoose.createConnection(
   }
 );
 
-app.listen(devPort, () => {
+app.get("/", (req, res) => {
+  res.send("hola amigos");
+});
+
+app.listen((devPort = process.env.PORT || devPort), () => {
   console.log(`Server running on port ${devPort}`);
 });
