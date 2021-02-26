@@ -1,13 +1,12 @@
-module.exports = Employee = (mongoose, Schema) => {
-  mongoose.model(
-    "Employee",
-    new Schema({
-      employee_id: { type: String, default: mongoose.Types.ObjectId() },
-      name: String,
-      username: String,
-      password: String,
-      level: String,
-      telephone: String,
-    })
-  );
+Employee = ({ model, Schema }) => {
+  const EmployeeSchema = new Schema({
+    name: String,
+    username: String,
+    password: String,
+    level: String,
+    telephone: String,
+  });
+  return (Employee = model("Employee", EmployeeSchema));
 };
+
+module.exports = Employee;

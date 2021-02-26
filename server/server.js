@@ -1,29 +1,26 @@
+const employee = require("./routes/employee");
+
 let { devPort, mongodbURI } = require("./config.json"),
   mongoose = require("mongoose"),
-  Schema = mongoose.Schema,
   express = require("express"),
   fs = require("fs"),
   app = express();
 
-mongoose.createConnection(
-  mongodbURI,
-  { useNewUrlParser: true, useUnifiedTopology: true },
-  () => {
-    try {
-      console.log("Connected to Database!");
-    } catch (error) {
-      throw error;
-    }
-  }
-);
+app.use(express.urlencoded({ extended: true })).use(express.json());
 
-app.get('/', (req,res) => {res.send('Index Page')})
+mongoose
+  .connect(mongodbURI, {
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+  })
+  .then(() => console.log("Connected to database"))
+  .catch((err) => console.log(err));
 
 getAllModel = () => {
   const model = fs.readdirSync("./model");
   model.forEach((file) => {
     const modelName = file.slice(0, file.length - 3);
-    global[modelName] = require("./model/" + file);
+    global[modelName] = require("./model/" + file)(mongoose);
   });
 };
 
@@ -35,7 +32,7 @@ getAllRoutes = () => {
 };
 
 (executor = () => {
-  getAllModel(mongoose, Schema);
+  getAllModel();
   getAllRoutes();
 })();
 
