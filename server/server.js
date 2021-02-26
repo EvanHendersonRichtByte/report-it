@@ -17,6 +17,8 @@ mongoose.createConnection(
   }
 );
 
+app.get('/', (req,res) => {res.send('Index Page')})
+
 getAllModel = () => {
   const model = fs.readdirSync("./model");
   model.forEach((file) => {
