@@ -1,7 +1,7 @@
 module.exports = (app, handler) => {
   app.post("/response", (req, res) => {
     Response.create(req.body, (response) => {
-      handler(res, response, "Failed");
+      handler(res, "Response has been created!", "Failed");
     });
   });
   app.get("/response", (req, res) => {

@@ -1,4 +1,4 @@
-Complaint = ({ model, Schema }) => {
+module.exports = Complaint = ({ model, Schema }) => {
   const ComplaintSchema = new Schema({
     user_id: String,
     complaint_date: { type: Date, default: Date.now() },
@@ -8,5 +8,3 @@ Complaint = ({ model, Schema }) => {
   });
   return (Complaint = model("Complaint", ComplaintSchema));
 };
-
-module.exports = Complaint;

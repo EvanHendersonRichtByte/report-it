@@ -1,4 +1,4 @@
-User = ({ model, Schema }) => {
+module.exports = User = ({ model, Schema }) => {
   const UserSchema = new Schema({
     name: String,
     username: String,
@@ -8,5 +8,3 @@ User = ({ model, Schema }) => {
   });
   return (User = model("User", UserSchema));
 };
-
-module.exports = User;

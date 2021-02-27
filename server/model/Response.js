@@ -1,10 +1,9 @@
-Response = ({ model, Schema }) => {
+module.exports = Response = ({ model, Schema }) => {
   const ResponseSchema = new Schema({
-    response_date: { type: Date, default: Date.now() },
+    complaint_id: String,
+    employee_id: String,
     response_text: String,
-    employee_id: Number,
+    response_date: { type: Date, default: Date.now() },
   });
   return (Response = model("Response", ResponseSchema));
 };
-
-module.exports = Response;

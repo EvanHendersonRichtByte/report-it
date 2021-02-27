@@ -1,4 +1,4 @@
-Employee = ({ model, Schema }) => {
+module.exports = Employee = ({ model, Schema }) => {
   const EmployeeSchema = new Schema({
     name: String,
     username: String,
@@ -8,5 +8,3 @@ Employee = ({ model, Schema }) => {
   });
   return (Employee = model("Employee", EmployeeSchema));
 };
-
-module.exports = Employee;
