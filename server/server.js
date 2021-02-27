@@ -1,21 +1,9 @@
-const employee = require("./routes/employee");
+const responseHandler = require("./handler/responseHandler");
+const { mongoose } = require("./config/db");
+const { app } = require("./config/config");
+const fs = require("fs");
 
-let { devPort, mongodbURI } = require("./config.json"),
-  mongoose = require("mongoose"),
-  express = require("express"),
-  fs = require("fs"),
-  app = express();
-
-app.use(express.urlencoded({ extended: true })).use(express.json());
-
-mongoose
-  .connect(mongodbURI, {
-    useNewUrlParser: true,
-    useUnifiedTopology: true,
-  })
-  .then(() => console.log("Connected to database"))
-  .catch((err) => console.log(err));
-
+// Dynamic Model Import
 getAllModel = () => {
   const model = fs.readdirSync("./model");
   model.forEach((file) => {
@@ -24,18 +12,16 @@ getAllModel = () => {
   });
 };
 
+// Dynamic Route Import
 getAllRoutes = () => {
   const routes = fs.readdirSync("./routes");
   routes.forEach((file) => {
-    require(`./routes/${file}`)(app);
+    require(`./routes/${file}`)(app, responseHandler);
   });
 };
 
+// IIFE Executor
 (executor = () => {
   getAllModel();
   getAllRoutes();
 })();
-
-app.listen((devPort = process.env.PORT || devPort), () => {
-  console.log(`Server running on port ${devPort}`);
-});

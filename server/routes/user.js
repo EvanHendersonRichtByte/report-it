@@ -1,47 +1,27 @@
-module.exports = (app) => {
+module.exports = (app, handler) => {
   app.post("/user", (req, res) => {
     User.create(req.body, () => {
-      try {
-        res.send("Operation Success");
-      } catch (err) {
-        res.send("Operation Failed");
-      }
+      handler(res, "Registered!", "Register failed");
     });
   });
   app.get("/user", (req, res) => {
     User.find({}, (err, data) => {
-      try {
-        res.send(data);
-      } catch (err) {
-        console.log(err);
-      }
+      handler(res, data, "Failed when getting users");
     });
   });
   app.get("/user/:id", (req, res) => {
     User.findById(req.params.id, (err, data) => {
-      try {
-        res.send(data);
-      } catch (err) {
-        console.log(err);
-      }
+      handler(res, data, "Failed when getting user data");
     });
   });
   app.put("/user/:id", (req, res) => {
     User.updateOne({ _id: req.params.id }, req.body, (err, data) => {
-      try {
-        res.send(data);
-      } catch (err) {
-        console.log(err);
-      }
+      handler(res, "user has been updated!", "Failed when updating user data");
     });
   });
   app.delete("/user/:id", (req, res) => {
     User.deleteOne({ _id: req.params.id }, (err, data) => {
-      try {
-        res.send("Operation Success");
-      } catch (err) {
-        throw err;
-      }
+      handler(res, "user has been deleted!", "Failed when deleting user data");
     });
   });
 };

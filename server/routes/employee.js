@@ -1,47 +1,35 @@
-module.exports = (app) => {
+module.exports = (app, handler) => {
   app.post("/employee", (req, res) => {
-    Employee.create(req.body, () => {
-      try {
-        res.send("Operation Success");
-      } catch (err) {
-        res.send("Operation Failed");
-      }
-    });
+    Employee.create(req.body, () =>
+      handler(res, "Employee Added!", "Failed when adding employee")
+    );
   });
   app.get("/employee", (req, res) => {
     Employee.find({}, (err, employee) => {
-      try {
-        res.send(employee);
-      } catch (err) {
-        res.send("Operation Failed");
-      }
+      handler(res, employee, "Failed when getting employee data");
     });
   });
   app.get("/employee/:id", (req, res) => {
     Employee.find({ _id: req.params.id }, (err, employee) => {
-      try {
-        res.send(employee);
-      } catch (err) {
-        res.send("Operation Failed");
-      }
+      handler(res, employee, "Failed when getting individual employee data");
     });
   });
   app.put("/employee/:id", (req, res) => {
     Employee.updateOne({ _id: req.params.id }, req.body, () => {
-      try {
-        res.send("Operation Success");
-      } catch (err) {
-        res.send("Operation Failed");
-      }
+      handler(
+        res,
+        "Employee data updated!",
+        "Failed when updating individual employee data"
+      );
     });
   });
   app.delete("/employee/:id", (req, res) => {
     Employee.deleteOne({ _id: req.params.id }, () => {
-      try {
-        res.send("Operation Success");
-      } catch (err) {
-        res.send("Operation Failed");
-      }
+      handler(
+        res,
+        "Deleted Employee",
+        "Failed when deleting individual Employee data"
+      );
     });
   });
 };
