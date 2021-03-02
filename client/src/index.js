@@ -1,27 +1,17 @@
 import React from "react";
 import ReactDOM from "react-dom";
 import App from "./App.jsx";
+import reducers from "./redux/reducers";
 import reportWebVitals from "./reportWebVitals";
 import { createStore } from "redux";
 import { Provider } from "react-redux";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "bootstrap/dist/js/bootstrap.bundle.min.js";
 
-const initialState = {
-  user: { username: "", level: "" },
-  report: {
-    title: "",
-    description: "",
-    date: "",
-    city: "",
-    destInstance: "",
-    attachment: "",
-  },
-};
-
-const reducer = (state = initialState, action) => state;
-
-const store = createStore(reducer);
+const store = createStore(
+  reducers,
+  window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__()
+);
 
 ReactDOM.render(
   <React.StrictMode>

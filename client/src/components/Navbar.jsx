@@ -22,15 +22,25 @@ const Navbar = ({ children, brand, expandBreakpoint, extClass }) => (
   </nav>
 );
 
-const NavbarList = ({ children, extClass }) => (
+const NavbarList = ({ children, extClass = "" }) => (
   <ul className={`navbar-nav ${extClass}`}>{children}</ul>
 );
 
-const NavbarItem = ({ children, extClass }) => (
-  <li className={`nav-item ${extClass}`}>{children}</li>
-);
+const NavbarItem = ({ children, extClass = "", navLink }) => {
+  /**
+   * NavLink Params
+   * Title
+   * Redirect
+   * ExtClass
+   */
+  if (navLink) {
+    return <li className={`nav-item ${extClass}`}>{NavbarLink(navLink)}</li>;
+  } else {
+    return <li className={`nav-item ${extClass}`}>{children}</li>;
+  }
+};
 
-const NavbarLink = ({ title, redirect, extClass }) => (
+const NavbarLink = ({ title, redirect, extClass = "" }) => (
   <a className={`nav-link ${extClass}`} href={redirect}>
     {title}
   </a>

@@ -1,34 +1,76 @@
 import { Fragment } from "react";
 
-const Form = ({ extClass, children }) => (
-  <form className={extClass}>{children}</form>
-);
-
-const InputGroup = ({ inline, children, extClass, inputGroupText }) => (
-  <div className={inline ? `input-group mb-3` : `${extClass} mb-3`}>
+const Form = ({ onSubmit, extClass, children }) => (
+  <form onSubmit={onSubmit} className={extClass}>
     {children}
-    {inline && (
-      <span className="input-group-text" id="basic-addon3">
-        {inputGroupText}
-      </span>
-    )}
-  </div>
+  </form>
 );
 
-const Input = ({ type, id, name, label, placeholder }) => (
+const InputGroup = ({
+  inline,
+  children,
+  extClass = "",
+  inputGroupText,
+  input,
+}) => {
+  const isInline = (component) => {
+    if (inline) {
+      return (
+        <Fragment>
+          <span className="input-group-text">{inputGroupText}</span>
+          {component}
+        </Fragment>
+      );
+    }
+  };
+  const mainElement = (component) => (
+    <div className={inline ? `input-group mb-3` : `${extClass} mb-3`}>
+      {!inline && component}
+      {isInline(component)}
+    </div>
+  );
+
+  if (input) {
+    return mainElement(Input(input));
+  } else {
+    return mainElement(children);
+  }
+};
+
+const Input = ({
+  type,
+  id,
+  name,
+  label,
+  placeholder,
+  value,
+  handleChange,
+  extClass = "",
+}) => (
   <Fragment>
     {label && labelElement(label, id)}
     <input
       name={name}
       type={type}
       id={id}
-      className="form-control"
+      className={`form-control ${extClass}`}
       placeholder={placeholder}
+      value={value}
+      onChange={handleChange}
     />
   </Fragment>
 );
 
-const Textarea = ({ id, name, label, cols, rows, extClass, value }) => (
+const Textarea = ({
+  id,
+  name,
+  label,
+  cols,
+  rows,
+  extClass,
+  value,
+  handleChange,
+}) => (
   <Fragment>
     {label && labelElement(label, id)}
     <textarea
@@ -37,12 +79,19 @@ const Textarea = ({ id, name, label, cols, rows, extClass, value }) => (
       cols={cols}
       rows={rows}
       value={value}
+      onChange={handleChange}
     />
   </Fragment>
 );
 
-const Select = ({ id, name, children }) => (
-  <select id={id} className="form-select" name={name}>
+const Select = ({ id, name, value, children, handleChange }) => (
+  <select
+    id={id}
+    className="form-select"
+    value={value}
+    name={name}
+    onChange={handleChange}
+  >
     {children}
   </select>
 );
