@@ -1,8 +1,7 @@
-const ADD_REPORT = (payload) => {
-  return {
-    type: "ADD_REPORT",
-    payload,
-  };
-};
+// REPORT | COMPLAINT
+const ADD_REPORT = (payload) => ({ type: "ADD_REPORT", payload });
 
-export default ADD_REPORT
+// USER
+const REGISTER = (payload) => ({ type: "REGISTER", payload });
+
+export { ADD_REPORT, REGISTER };

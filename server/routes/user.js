@@ -1,12 +1,40 @@
+const bcrypt = require("bcryptjs");
+const jwt = require("jsonwebtoken");
+const token = (payload) => {
+  return jwt.sign({ payload }, "okegan");
+};
+
 module.exports = (app, handler) => {
   app.post("/user", (req, res) => {
-    User.create(req.body, () => {
-      handler(res, "Registered!", "Register failed");
+    bcrypt.genSalt(10, (err, salt) => {
+      bcrypt.hash(req.body.password, salt, (err, hash) => {
+        req.body.password = hash;
+        User.findOne({ email: req.body.email }, (err, user) => {
+          if (!user) {
+            User.create(req.body, (err, data) => {
+              handler(res, token(data._id), err);
+            });
+          } else res.send("Email already taken");
+        });
+      });
     });
   });
   app.get("/user", (req, res) => {
     User.find({}, (err, data) => {
-      handler(res, data, "Failed when getting users");
+      handler(res, data, "Failed when getting users data");
+    });
+  });
+  app.post("/user/auth", (req, res) => {
+    User.findOne({ email: req.body.email }, (err, data) => {
+      if (data) {
+        let credentialStatus = "";
+        bcrypt.compare(req.body.password, data.password, (err, success) => {
+          success
+            ? (credentialStatus = "Verified")
+            : (credentialStatus = "Unverified");
+          handler(res, { credentialStatus, token: token(data._id) }, err);
+        });
+      } else res.send("We are unable to find your data");
     });
   });
   app.get("/user/:id", (req, res) => {

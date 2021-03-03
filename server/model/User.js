@@ -3,7 +3,7 @@ module.exports = User = ({ model, Schema }) => {
     name: String,
     username: String,
     password: String,
-    email: String,
+    email: { type: String, unique: true },
     telephone: String,
   });
   return (User = model("User", UserSchema));

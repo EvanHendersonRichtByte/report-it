@@ -1,6 +1,6 @@
 import { Fragment, useState } from "react";
 import { useDispatch } from "react-redux";
-import ADD_REPORT from "../redux/actions";
+import { ADD_REPORT } from "../redux/actions";
 import { Navbar, NavbarList, NavbarItem } from "../components/Navbar";
 import {
   Form,
@@ -16,6 +16,11 @@ const Index = () => {
 
   const handleChange = (e) => {
     setState((state) => ({ ...state, [e.target.name]: e.target.value }));
+  };
+
+  const handleLogout = () => {
+    sessionStorage.clear();
+    window.location.reload();
   };
 
   const [state, setState] = useState({
@@ -36,6 +41,32 @@ const Index = () => {
     dispatch(ADD_REPORT(state));
   };
 
+  const isLogged = () => {
+    let token = sessionStorage.getItem("auth-token");
+    token = JSON.parse(token);
+    if (token) {
+      return (
+        <NavbarItem>
+          <button onClick={handleLogout} className="btn btn-outline-secondary">
+            Sign Out
+          </button>
+        </NavbarItem>
+      );
+    } else {
+      return (
+        <Fragment>
+          <NavbarItem navLink={navLink("Sign in", "login")} />
+          <NavbarItem
+            navLink={navLink(
+              "Sign up",
+              "register",
+              "btn btn-outline-secondary ms-2"
+            )}
+          />
+        </Fragment>
+      );
+    }
+  };
   return (
     <Fragment>
       <Navbar
@@ -47,16 +78,7 @@ const Index = () => {
           <NavbarItem navLink={navLink("Home", "/", "active")} />
           <NavbarItem navLink={navLink("About", "about")} />
         </NavbarList>
-        <NavbarList extClass="ms-auto">
-          <NavbarItem navLink={navLink("Sign in", "login")} />
-          <NavbarItem
-            navLink={navLink(
-              "Sign up",
-              "register",
-              "btn btn-outline-secondary ms-2"
-            )}
-          />
-        </NavbarList>
+        <NavbarList extClass="ms-auto">{isLogged()}</NavbarList>
       </Navbar>
       <div className="col-md-7 mx-auto mt-5">
         <Form extClass="rounded shadow bg-light p-4" onSubmit={onSubmit}>
