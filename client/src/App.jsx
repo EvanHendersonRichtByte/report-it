@@ -2,7 +2,8 @@ import { BrowserRouter, Route, Switch } from "react-router-dom";
 import Index from "./pages/Index";
 import Register from "./pages/Register";
 import Login from "./pages/Login";
-import UserDashboard from "./pages/UserDashboard";
+import Nav from "./layouts/Nav";
+import Report from "./pages/Report";
 
 const isLogged = () => {
   let token = sessionStorage.getItem("auth-token");
@@ -16,10 +17,16 @@ export default function App() {
     <BrowserRouter>
       <Switch>
         {isLogged()}
-        <Route path="/dashboard" component={UserDashboard} />
+        <Route path="/report">
+          <Nav />
+          <Report />
+        </Route>
         <Route path="/register" component={Register} />
         <Route path="/login" component={Login} />
-        <Route path="/" render={() => <Index isLogged={isLogged} />} />
+        <Route path="/">
+          <Nav />
+          <Index />
+        </Route>
       </Switch>
     </BrowserRouter>
   );
