@@ -19,6 +19,7 @@ const Index = () => {
   };
 
   const [state, setState] = useState({
+    user_id: sessionStorage.getItem("id"),
     title: "",
     description: "",
     date: "",
@@ -29,16 +30,20 @@ const Index = () => {
 
   const onSubmit = (e) => {
     e.preventDefault();
-    const url = "http://localhost:2021/complaint";
-    axios
-      .post(url, state)
-      .then((data) => {
-        window.location.assign("/report");
-      })
-      .catch((err) => {
-        throw err;
-      });
-    dispatch(ADD_REPORT(state));
+    if (!state.user_id) {
+      window.location.assign("/register");
+    } else {
+      const url = "/complaint";
+      axios
+        .post(url, state)
+        .then((data) => {
+          window.location.assign("/report");
+        })
+        .catch((err) => {
+          throw err;
+        });
+      dispatch(ADD_REPORT(state));
+    }
   };
 
   return (

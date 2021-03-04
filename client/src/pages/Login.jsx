@@ -22,6 +22,7 @@ export default function Login() {
           "auth-token",
           JSON.stringify(response.data.token)
         );
+        sessionStorage.setItem("id", JSON.stringify(response.data.id));
         window.location = "/";
       })
       .catch((err) => console.log(err));

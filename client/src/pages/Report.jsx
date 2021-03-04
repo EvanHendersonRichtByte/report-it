@@ -16,7 +16,7 @@ export default function Report() {
             <div className="card-body d-flex justify-content-between align-items-center">
               <p className="d-inline mb-0">
                 Air Kran Mati{" "}
-                <span class="badge bg-primary ms-2">In Progress</span>
+                <span className="badge bg-primary ms-2">In Progress</span>
               </p>
               <a href="/detail/" className="btn btn-sm btn-outline-primary">
                 Detail
@@ -27,7 +27,7 @@ export default function Report() {
             <div className="card-body d-flex justify-content-between align-items-center">
               <p className="d-inline mb-0">
                 Air Kran Mati{" "}
-                <span class="badge bg-success ms-2">Approved</span>
+                <span className="badge bg-success ms-2">Approved</span>
               </p>
               <a href="/detail/" className="btn btn-sm btn-outline-primary">
                 Detail
@@ -38,7 +38,7 @@ export default function Report() {
             <div className="card-body d-flex justify-content-between align-items-center">
               <p className="d-inline mb-0">
                 Air Kran Mati{" "}
-                <span class="badge bg-danger ms-2">Disapproved</span>
+                <span className="badge bg-danger ms-2">Disapproved</span>
               </p>
               <a href="/detail/" className="btn btn-sm btn-outline-primary">
                 Detail
