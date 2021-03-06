@@ -1,5 +1,6 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Fragment } from "react";
+import axios from "axios";
 import { Navbar, NavbarList, NavbarItem } from "../components/Navbar";
 import {
   Form,
@@ -70,21 +71,53 @@ const navLink = (title, redirect, extClass) => {
 };
 
 export default function Nav() {
-  const handleChange = (e) => {
-    setState((state) => ({ ...state, [e.target.name]: e.target.value }));
-  };
-
   const [state, setState] = useState({
+    kota: [],
+    user_id: JSON.parse(sessionStorage.getItem("id")),
     title: "",
     description: "",
     date: "",
-    city: "Jakarta",
+    city: "Kota Malang",
     destInstance: "",
-    attachment: "",
+    attachment: null,
   });
 
+  const handleChange = (e) => {
+    if (e.target.files) {
+      setState((state) => ({ ...state, attachment: e.target.files[0] }));
+    } else {
+      setState((state) => ({ ...state, [e.target.name]: e.target.value }));
+    }
+  };
+
+  useEffect(() => {
+    axios
+      .get("https://dev.farizdotid.com/api/daerahindonesia/kota?id_provinsi=35")
+      .then((response) =>
+        setState((state) => ({ ...state, kota: response.data.kota_kabupaten }))
+      )
+      .catch((err) => console.log(err));
+  }, []);
   const onSubmit = (e) => {
     e.preventDefault();
+    const formData = new FormData();
+    formData.append("user_id", state.user_id);
+    formData.append("title", state.title);
+    formData.append("description", state.description);
+    formData.append("date", state.date);
+    formData.append("city", state.city);
+    formData.append("destInstance", state.destInstance);
+    formData.append("attachment", state.attachment);
+
+    const url = "/complaint";
+    axios
+      .post(url, formData)
+      .then((data) => {
+        window.location.assign("/report");
+      })
+      .catch((err) => {
+        throw err;
+      });
   };
   return (
     <Navbar
@@ -149,9 +182,9 @@ export default function Nav() {
                     value={state.city}
                     handleChange={handleChange}
                   >
-                    <Option value="Malang" text="Malang" />
-                    <Option value="Surabaya" text="Surabaya" />
-                    <Option value="Jakarta" text="Jakarta" />
+                    {state.kota.map((e, i) => (
+                      <Option key={i} value={e.nama} text={e.nama} />
+                    ))}
                   </Select>
                 </InputGroup>
                 <InputGroup>

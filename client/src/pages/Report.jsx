@@ -1,4 +1,33 @@
+import axios from "axios";
+import { useState, useEffect } from "react";
 export default function Report() {
+  const [state, setState] = useState({
+    report: [],
+    userId: JSON.parse(sessionStorage.getItem("id")),
+  });
+
+  useEffect(() => {
+    axios
+      .get(`/user/${state.userId}/complaint`)
+      .then(({ data }) => setState((state) => ({ ...state, report: data })))
+      .catch((err) => {
+        throw err;
+      });
+  }, [state.userId]);
+
+  const handleStatus = ({ status }) => {
+    switch (status) {
+      case "In Progress":
+        return "bg-primary";
+      case "Approved":
+        return "bg-success";
+      case "Disaproved":
+        return "bg-danger";
+      default:
+        return "bg-warning";
+    }
+  };
+
   return (
     <div className="container-fluid pt-4 min-vh-100">
       <div className="row">
@@ -12,39 +41,82 @@ export default function Report() {
           </div>
         </div>
         <div className="col-md-10">
-          <div className="card mb-3">
-            <div className="card-body d-flex justify-content-between align-items-center">
-              <p className="d-inline mb-0">
-                Air Kran Mati{" "}
-                <span className="badge bg-primary ms-2">In Progress</span>
-              </p>
-              <a href="/detail/" className="btn btn-sm btn-outline-primary">
-                Detail
-              </a>
-            </div>
-          </div>
-          <div className="card mb-3">
-            <div className="card-body d-flex justify-content-between align-items-center">
-              <p className="d-inline mb-0">
-                Air Kran Mati{" "}
-                <span className="badge bg-success ms-2">Approved</span>
-              </p>
-              <a href="/detail/" className="btn btn-sm btn-outline-primary">
-                Detail
-              </a>
-            </div>
-          </div>
-          <div className="card mb-3">
-            <div className="card-body d-flex justify-content-between align-items-center">
-              <p className="d-inline mb-0">
-                Air Kran Mati{" "}
-                <span className="badge bg-danger ms-2">Disapproved</span>
-              </p>
-              <a href="/detail/" className="btn btn-sm btn-outline-primary">
-                Detail
-              </a>
-            </div>
-          </div>
+          {state.report &&
+            state.report.map((data, id) => {
+              data.complaint_date = new Date(
+                data.complaint_date
+              ).toDateString();
+              return (
+                <div className="card mb-3" key={id}>
+                  <div className="card-body d-flex justify-content-between align-items-center">
+                    <p className="d-inline mb-0">
+                      {" "}
+                      {data.title}
+                      <span className={`badge ${handleStatus(data)} ms-2`}>
+                        {data.status}
+                      </span>
+                      <code className="ms-3">
+                        Posted on {data.complaint_date}
+                      </code>
+                    </p>
+                    <button
+                      type="button"
+                      className="btn btn-outline-primary"
+                      data-bs-toggle="modal"
+                      data-bs-target={`#rpt-modal-${data._id}`}
+                    >
+                      Detail
+                    </button>
+                    <div
+                      className="modal fade"
+                      id={`rpt-modal-${data._id}`}
+                      tabIndex="-1"
+                      aria-labelledby="exampleModalLabel"
+                      aria-hidden="true"
+                    >
+                      <div className="modal-dialog modal-dialog-scrollable">
+                        <div className="modal-content">
+                          <div className="modal-header">
+                            <h5 className="modal-title" id="exampleModalLabel">
+                              {data.title}
+                            </h5>
+                            <button
+                              type="button"
+                              className="btn-close"
+                              data-bs-dismiss="modal"
+                              aria-label="Close"
+                            ></button>
+                          </div>
+                          <div className="modal-body">
+                            <img
+                              src={`https://id-report-id.herokuapp.com/uploads/${data.attachment}`}
+                              alt={data.title}
+                              className="img-fluid"
+                            />
+                            <div className="container-fluid p-3 d-flex">
+                              <div className="row">
+                                <h5>Description:</h5>
+                                <p>{data.description}</p>
+                                <p>City: {data.city}</p>
+                                <p>Instance: {data.destInstance}</p>
+                              </div>
+                            </div>
+                          </div>
+                          <div className="modal-footer">
+                            <p className="me-auto ms-2">
+                              Posted on {data.complaint_date}
+                            </p>
+                            <span className={`badge ${handleStatus(data)} `}>
+                              {data.status}
+                            </span>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              );
+            })}
         </div>
       </div>
     </div>

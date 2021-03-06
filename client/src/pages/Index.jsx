@@ -1,6 +1,7 @@
-import { useState } from "react";
+import { Fragment, useState } from "react";
 import { useDispatch } from "react-redux";
 import axios from "axios";
+import Image from "../assets/img/index.jpg";
 import { ADD_REPORT } from "../redux/actions";
 import {
   Form,
@@ -19,14 +20,24 @@ const Index = () => {
   };
 
   const [state, setState] = useState({
+    kota: [],
     user_id: sessionStorage.getItem("id"),
     title: "",
     description: "",
     date: "",
-    city: "Jakarta",
+    city: "Kota Malang",
     destInstance: "",
     attachment: "",
   });
+
+  (() => {
+    axios
+      .get("https://dev.farizdotid.com/api/daerahindonesia/kota?id_provinsi=35")
+      .then((response) =>
+        setState((state) => ({ ...state, kota: response.data.kota_kabupaten }))
+      )
+      .catch((err) => console.log(err));
+  })();
 
   const onSubmit = (e) => {
     e.preventDefault();
@@ -47,67 +58,89 @@ const Index = () => {
   };
 
   return (
-    <div className="col-md-7 mx-auto mt-5">
-      <Form extClass="rounded shadow bg-light p-4" onSubmit={onSubmit}>
-        <h3 className="text-center mb-4 text-danger">Deliver your report</h3>
-        <InputGroup
-          input={{
-            name: "title",
-            placeholder: "Report Title",
-            value: state.title,
-            handleChange: handleChange,
-          }}
-        />
-        <InputGroup>
-          <Textarea
-            name="description"
-            rows={7}
-            value={state.description}
-            handleChange={handleChange}
-          />
-        </InputGroup>
-        <InputGroup
-          inline
-          extClass="mb-3"
-          inputGroupText="The Date of Incident"
-          input={{
-            type: "date",
-            name: "date",
-            value: state.date,
-            handleChange: handleChange,
-          }}
-        />
-        <InputGroup inline inputGroupText="Select City">
-          <Select name="city" value={state.city} handleChange={handleChange}>
-            <Option value="Malang" text="Malang" />
-            <Option value="Surabaya" text="Surabaya" />
-            <Option value="Jakarta" text="Jakarta" />
-          </Select>
-        </InputGroup>
-        <InputGroup>
-          <Input
-            placeholder="Destination Instance"
-            name="destInstance"
-            value={state.destInstance}
-            handleChange={handleChange}
-          />
-        </InputGroup>
-        <label className="mb-2" htmlFor="file">
-          Upload Attachment
-        </label>
-        <div className="col-md-12 d-flex justify-content-between">
-          <input
-            type="file"
-            name="attachment"
-            onChange={handleChange}
-            id="file"
-          />
-          <button type="submit" className="btn btn-danger">
-            Report
-          </button>
+    <Fragment>
+      <div className="container p-5 d-flex justify-content-around">
+        <div className="row">
+          <div className="col-md-5">
+            <img
+              className="img-fluid rounded"
+              src={Image}
+              alt="by LumenSoft Technologies"
+            />
+          </div>
+          <div className="col-md-7 lh-md d-flex flex-column justify-content-center">
+            <h2 className="d-block">The First Complaint Support on Era 45s</h2>
+            <p className="d-block">
+              We ensure greater resources that pull out the body out of the box
+            </p>
+            <button className="btn btn-danger btn-inline w-25">
+              Make your report
+            </button>
+          </div>
         </div>
-      </Form>
-    </div>
+      </div>
+      <div className="col-md-7 mx-auto mt-5">
+        <Form extClass="rounded shadow bg-light p-4" onSubmit={onSubmit}>
+          <h3 className="text-center mb-4 text-danger">Deliver your report</h3>
+          <InputGroup
+            input={{
+              name: "title",
+              placeholder: "Report Title",
+              value: state.title,
+              handleChange: handleChange,
+            }}
+          />
+          <InputGroup>
+            <Textarea
+              name="description"
+              rows={7}
+              value={state.description}
+              handleChange={handleChange}
+            />
+          </InputGroup>
+          <InputGroup
+            inline
+            extClass="mb-3"
+            inputGroupText="The Date of Incident"
+            input={{
+              type: "date",
+              name: "date",
+              value: state.date,
+              handleChange: handleChange,
+            }}
+          />
+          <InputGroup inline inputGroupText="Select City">
+            <Select name="city" value={state.city} handleChange={handleChange}>
+              {state.kota.map((e, i) => (
+                <Option key={i} value={e.nama} text={e.nama} />
+              ))}
+            </Select>
+          </InputGroup>
+          <InputGroup>
+            <Input
+              placeholder="Destination Instance"
+              name="destInstance"
+              value={state.destInstance}
+              handleChange={handleChange}
+            />
+          </InputGroup>
+          <label className="mb-2" htmlFor="file">
+            Upload Attachment
+          </label>
+          <div className="col-md-12 d-flex justify-content-between">
+            <input
+              type="file"
+              name="attachment"
+              onChange={handleChange}
+              id="file"
+            />
+            <button type="submit" className="btn btn-danger">
+              Report
+            </button>
+          </div>
+        </Form>
+      </div>
+    </Fragment>
   );
 };
 

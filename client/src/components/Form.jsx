@@ -1,7 +1,12 @@
 import { Fragment } from "react";
 
 const Form = ({ onSubmit, extClass, children }) => (
-  <form onSubmit={onSubmit} className={extClass}>
+  <form
+    onSubmit={onSubmit}
+    className={extClass}
+    method="POST"
+    encType="multipart/form-data"
+  >
     {children}
   </form>
 );

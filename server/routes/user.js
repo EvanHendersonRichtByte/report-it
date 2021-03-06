@@ -56,4 +56,9 @@ module.exports = (app, handler) => {
       handler(res, "user has been deleted!", "Failed when deleting user data");
     });
   });
+  app.get("/user/:id/complaint", (req, res) => {
+    Complaint.find({ user_id: req.params.id }, (err, data) => {
+      handler(res, data, err);
+    });
+  });
 };
