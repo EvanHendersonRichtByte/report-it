@@ -14,7 +14,7 @@ export default function Login() {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    const url = "/api/user/auth";
+    const url = "https://id-report-id.herokuapp.com/user/auth";
     axios
       .post(url, state)
       .then((response) => {
