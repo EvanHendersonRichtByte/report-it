@@ -22,7 +22,7 @@ export default function Register() {
   const handleSubmit = (e) => {
     e.preventDefault();
     if (state.password === state.confirmPassword) {
-      const url = "/user";
+      const url = "https://id-report-id.herokuapp.com/user";
       dispatch(REGISTER(state));
       axios
         .post(url, state)

@@ -8,7 +8,7 @@ export default function Report() {
 
   useEffect(() => {
     axios
-      .get(`/user/${state.userId}/complaint`)
+      .get(`https://id-report-id.herokuapp.com/user/${state.userId}/complaint`)
       .then(({ data }) => setState((state) => ({ ...state, report: data })))
       .catch((err) => {
         throw err;

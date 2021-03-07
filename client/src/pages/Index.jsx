@@ -44,7 +44,7 @@ const Index = () => {
     if (!state.user_id) {
       window.location.assign("/register");
     } else {
-      const url = "/complaint";
+      const url = "https://id-report-id.herokuapp.com/complaint";
       axios
         .post(url, state)
         .then((data) => {

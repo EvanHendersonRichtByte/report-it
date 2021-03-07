@@ -109,7 +109,7 @@ export default function Nav() {
     formData.append("destInstance", state.destInstance);
     formData.append("attachment", state.attachment);
 
-    const url = "/complaint";
+    const url = "https://id-report-id.herokuapp.com/complaint";
     axios
       .post(url, formData)
       .then((data) => {
