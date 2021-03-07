@@ -14,7 +14,7 @@ export default function Login() {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    const url = "/user/auth";
+    const url = "/api/user/auth";
     axios
       .post(url, state)
       .then((response) => {
