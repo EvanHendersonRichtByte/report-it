@@ -18,12 +18,16 @@ export default function Login() {
     axios
       .post(url, state)
       .then((response) => {
-        sessionStorage.setItem(
-          "auth-token",
-          JSON.stringify(response.data.token)
-        );
-        sessionStorage.setItem("id", JSON.stringify(response.data.id));
-        window.location = "/";
+        if (typeof response.data === "object") {
+          sessionStorage.setItem(
+            "auth-token",
+            JSON.stringify(response.data.token)
+          );
+          sessionStorage.setItem("id", JSON.stringify(response.data.id));
+          window.location = "/";
+        } else {
+          window.location = "/";
+        }
       })
       .catch((err) => console.log(err));
   };

@@ -29,14 +29,18 @@ module.exports = (app, handler) => {
       if (data) {
         let credentialStatus = "";
         bcrypt.compare(req.body.password, data.password, (err, success) => {
-          success
+          success === true
             ? (credentialStatus = "Verified")
             : (credentialStatus = "Unverified");
-          handler(
-            res,
-            { credentialStatus, token: token(data._id), id: data._id },
-            err
-          );
+          if (credentialStatus === "Verified") {
+            handler(
+              res,
+              { credentialStatus, token: token(data._id), id: data._id },
+              err
+            );
+          } else {
+            res.send("We are unable to find your data");
+          }
         });
       } else res.send("We are unable to find your data");
     });
