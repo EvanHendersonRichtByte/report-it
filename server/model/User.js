@@ -5,7 +5,7 @@ module.exports = User = ({ model, Schema }) => {
     password: String,
     email: { type: String, unique: true },
     telephone: String,
-    level: { type: String, default: "Pending" },
+    level: { type: String, default: "User" },
   });
   return (User = model("User", UserSchema));
 };
