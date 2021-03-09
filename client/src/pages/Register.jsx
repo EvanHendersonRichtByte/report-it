@@ -26,9 +26,10 @@ export default function Register() {
       dispatch(REGISTER(state));
       axios
         .post(url, state)
-        .then((response) => {
-          const { token, id } = response.data;
-          sessionStorage.setItem("auth-token", JSON.stringify(token));
+        .then(({ data }) => {
+          const id = JSON.stringify(data.id);
+          const token = JSON.stringify(data.token);
+          sessionStorage.setItem("auth-token", token);
           sessionStorage.setItem("id", id);
           window.location.assign("/report");
         })
