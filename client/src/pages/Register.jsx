@@ -27,10 +27,12 @@ export default function Register() {
       axios
         .post(url, state)
         .then(({ data }) => {
-          const id = JSON.stringify(data.id);
           const token = JSON.stringify(data.token);
+          const id = JSON.stringify(data.data["_id"]);
+          const level = JSON.stringify(data.data["level"]);
           sessionStorage.setItem("auth-token", token);
           sessionStorage.setItem("id", id);
+          sessionStorage.setItem("level", level);
           window.location.assign("/report");
         })
         .catch((err) => {

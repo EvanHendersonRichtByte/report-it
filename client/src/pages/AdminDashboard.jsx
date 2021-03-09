@@ -35,10 +35,20 @@ export default function AdminDashboard() {
         <div className="col-md-2 border-end">
           <h5 className="text-center border-bottom pb-3">Reports</h5>
           <div className="row">
-            <button className="btn btn-transparent d-flex justify-content-between">
+            <a
+              href="/"
+              className="p btn btn-transparent d-flex justify-content-between text-dark "
+            >
               <p className="d-inline-block">Report List</p>
-              <span className="d-inline-block ms-auto">{">"}</span>
-            </button>
+              <span className="d-inline-block ">{">"}</span>
+            </a>
+            <a
+              href="/"
+              className="p btn btn-transparent d-flex justify-content-between text-dark "
+            >
+              <p className="d-inline-block">Assigned Report</p>
+              <span className="d-inline-block ">{">"}</span>
+            </a>
           </div>
         </div>
         <div className="col-md-10">

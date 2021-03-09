@@ -12,7 +12,7 @@ module.exports = (app, handler) => {
         User.findOne({ email: req.body.email }, (err, user) => {
           if (!user) {
             User.create(req.body, (err, data) => {
-              handler(res, { token: token(data._id), id: data._id }, err);
+              handler(res, { data, token: token(data._id) }, err);
             });
           } else res.send("Email already taken");
         });
@@ -33,11 +33,7 @@ module.exports = (app, handler) => {
             ? (credentialStatus = "Verified")
             : (credentialStatus = "Unverified");
           if (credentialStatus === "Verified") {
-            handler(
-              res,
-              { credentialStatus, token: token(data._id), id: data._id },
-              err
-            );
+            handler(res, { data, token: token(data._id) }, err);
           } else {
             res.send("We are unable to find your data");
           }

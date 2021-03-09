@@ -29,9 +29,9 @@ export default function Report() {
   };
 
   return (
-    <div className="container-fluid pt-4 min-vh-100">
+    <div className="container-fluid pt-4 ">
       <div className="row">
-        <div className="col-md-2 border-end">
+        <div className="col-md-2 border-end min-vh-100">
           <h5 className="text-center border-bottom pb-3">Reports</h5>
           <div className="row">
             <button className="btn btn-transparent d-flex justify-content-between">
@@ -41,6 +41,7 @@ export default function Report() {
           </div>
         </div>
         <div className="col-md-10">
+          {state.report.length < 1 && <h4>No report available</h4>}
           {state.report &&
             state.report.map((data, id) => {
               data.complaint_date = new Date(

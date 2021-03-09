@@ -23,7 +23,14 @@ export default function Login() {
             "auth-token",
             JSON.stringify(response.data.token)
           );
-          sessionStorage.setItem("id", JSON.stringify(response.data.id));
+          sessionStorage.setItem(
+            "id",
+            JSON.stringify(response.data.data["_id"])
+          );
+          sessionStorage.setItem(
+            "level",
+            JSON.stringify(response.data.data["level"])
+          );
           window.location = "/";
         } else {
           window.location = "/";
