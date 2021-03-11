@@ -21,13 +21,13 @@ const Index = () => {
 
   const [state, setState] = useState({
     kota: [],
-    user_id: sessionStorage.getItem("id"),
+    user_id: JSON.parse(sessionStorage.getItem("id")),
     title: "",
     description: "",
     date: "",
     city: "Kota Malang",
     destInstance: "",
-    attachment: "",
+    attachment: null,
   });
 
   useEffect(() => {
@@ -44,9 +44,18 @@ const Index = () => {
     if (!state.user_id) {
       window.location.assign("/register");
     } else {
+      const formData = new FormData();
+      formData.append("user_id", state.user_id);
+      formData.append("title", state.title);
+      formData.append("description", state.description);
+      formData.append("date", state.date);
+      formData.append("city", state.city);
+      formData.append("destInstance", state.destInstance);
+      formData.append("attachment", state.attachment);
+
       const url = "https://id-report-id.herokuapp.com/complaint";
       axios
-        .post(url, state)
+        .post(url, formData)
         .then((data) => {
           window.location.assign("/report");
         })

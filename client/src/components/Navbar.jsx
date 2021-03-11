@@ -2,8 +2,8 @@ const Navbar = ({ children, brand, expandBreakpoint, extClass }) => (
   <nav className={`navbar navbar-expand-${expandBreakpoint} ${extClass}`}>
     <div className="container-fluid">
       {brand && (
-        <a className="navbar-brand" href="/">
-          {brand}
+        <a className="navbar-brand text-danger" href="/">
+          <i className="bi bi-file-earmark-richtext"></i> {brand}
         </a>
       )}
       <button

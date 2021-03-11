@@ -17,9 +17,9 @@ const handleLogout = () => {
 };
 
 const isSigned = (textColor) => {
-  let token = sessionStorage.getItem("auth-token");
-  token = JSON.parse(token);
-  if (token) {
+  let level = sessionStorage.getItem("level");
+  level = JSON.parse(level);
+  if (level === "User") {
     return (
       <Fragment>
         <NavbarItem
@@ -36,6 +36,8 @@ const isSigned = (textColor) => {
         </NavbarItem>
       </Fragment>
     );
+  } else if (level === "Employee") {
+    return <NavbarItem navLink={navLink("Dashboard", "/employee", "active")} />;
   } else {
     return <NavbarItem navLink={navLink("Home", "/", "active")} />;
   }
@@ -109,6 +111,7 @@ export default function Nav({
       )
       .catch((err) => console.log(err));
   }, []);
+  
   const onSubmit = (e) => {
     e.preventDefault();
     const formData = new FormData();

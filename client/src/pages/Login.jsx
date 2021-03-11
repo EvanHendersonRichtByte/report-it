@@ -49,7 +49,7 @@ export default function Login() {
               type: "email",
               name: "email",
               value: state.email,
-              placeholder: "Full Name",
+              placeholder: "Email",
               handleChange: handleChange,
             }}
           />
