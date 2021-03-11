@@ -4,7 +4,7 @@ import Register from "./pages/Register";
 import Login from "./pages/Login";
 import Nav from "./layouts/Nav";
 import Report from "./pages/Report";
-import AdminDashboard from "./pages/AdminDashboard";
+import EmployeeDashboard from "./pages/EmployeeDashboard";
 
 const isLogged = () => {
   let token = sessionStorage.getItem("auth-token");
@@ -22,16 +22,13 @@ export default function App() {
           <Nav />
           <Report />
         </Route>
-        <Route path="/admin">
+        <Route path="/employee">
           <Nav />
-          <AdminDashboard />
+          <EmployeeDashboard />
         </Route>
         <Route path="/register" component={Register} />
         <Route path="/login" component={Login} />
-        <Route path="/">
-          <Nav />
-          <Index />
-        </Route>
+        <Route path="/" component={Index} />
       </Switch>
     </BrowserRouter>
   );

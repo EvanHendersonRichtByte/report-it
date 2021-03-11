@@ -1,6 +1,6 @@
 import axios from "axios";
 import { useState, useEffect } from "react";
-
+import pageAuth from "../handler/pageAuth";
 export default function AdminDashboard() {
   const [state, setState] = useState({
     report: [],
@@ -8,6 +8,7 @@ export default function AdminDashboard() {
   });
 
   useEffect(() => {
+    pageAuth("Employee");
     axios
       .get(`https://id-report-id.herokuapp.com/complaint`)
       .then(({ data }) => setState((state) => ({ ...state, report: data })))

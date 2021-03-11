@@ -16,16 +16,18 @@ const handleLogout = () => {
   window.location.reload();
 };
 
-const isSigned = () => {
+const isSigned = (textColor) => {
   let token = sessionStorage.getItem("auth-token");
   token = JSON.parse(token);
   if (token) {
     return (
       <Fragment>
-        <NavbarItem navLink={navLink("Report", "report")} />
+        <NavbarItem
+          navLink={navLink("Report", "report", `text-${textColor}`)}
+        />
         <NavbarItem>
           <button
-            className="btn btn-transparent align-text-bottom pt-2 text-secondary"
+            className={`btn btn-transparent align-text-bottom pt-2 text-${textColor}`}
             data-bs-toggle="modal"
             data-bs-target="#exampleModal"
           >
@@ -39,13 +41,16 @@ const isSigned = () => {
   }
 };
 
-const isLogged = () => {
+const isLogged = (textColor) => {
   let token = sessionStorage.getItem("auth-token");
   token = JSON.parse(token);
   if (token) {
     return (
       <NavbarItem>
-        <button onClick={handleLogout} className="btn btn-transparent">
+        <button
+          onClick={handleLogout}
+          className={`btn btn-transparent text-${textColor}`}
+        >
           Sign Out
         </button>
       </NavbarItem>
@@ -53,12 +58,14 @@ const isLogged = () => {
   } else {
     return (
       <Fragment>
-        <NavbarItem navLink={navLink("Sign in", "login")} />
+        <NavbarItem
+          navLink={navLink("Sign in", "login", `text-${textColor}`)}
+        />
         <NavbarItem
           navLink={navLink(
             "Sign up",
             "register",
-            "btn btn-outline-secondary ms-2"
+            `btn btn-outline-${textColor} ms-2 text-${textColor}`
           )}
         />
       </Fragment>
@@ -70,7 +77,11 @@ const navLink = (title, redirect, extClass) => {
   return { title, redirect, extClass };
 };
 
-export default function Nav() {
+export default function Nav({
+  theme = "light",
+  textColor = "secondary",
+  extClass = "",
+}) {
   const [state, setState] = useState({
     kota: [],
     user_id: JSON.parse(sessionStorage.getItem("id")),
@@ -123,10 +134,10 @@ export default function Nav() {
     <Navbar
       brand="Report it"
       expandBreakpoint="sm"
-      extClass="bg-transparent navbar-light p-3 shadow"
+      extClass={`bg-transparent navbar-${theme} p-3 ${extClass}`}
     >
-      <NavbarList>{isSigned()}</NavbarList>
-      <NavbarList extClass="ms-auto">{isLogged()}</NavbarList>
+      <NavbarList>{isSigned(textColor)}</NavbarList>
+      <NavbarList extClass="ms-auto">{isLogged(textColor)}</NavbarList>
       <div
         className="modal fade"
         id="exampleModal"

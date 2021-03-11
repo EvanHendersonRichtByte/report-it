@@ -1,5 +1,6 @@
 import axios from "axios";
 import { useState, useEffect } from "react";
+import pageAuth from "../handler/pageAuth";
 export default function Report() {
   const [state, setState] = useState({
     report: [],
@@ -7,6 +8,7 @@ export default function Report() {
   });
 
   useEffect(() => {
+    pageAuth("User");
     axios
       .get(`https://id-report-id.herokuapp.com/user/${state.userId}/complaint`)
       .then(({ data }) => setState((state) => ({ ...state, report: data })))
