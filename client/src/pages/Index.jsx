@@ -1,8 +1,6 @@
 import { Fragment, useState, useEffect } from "react";
-import { useDispatch } from "react-redux";
 import axios from "axios";
 import Nav from "../layouts/Nav";
-import { ADD_REPORT } from "../redux/actions";
 import {
   Form,
   Input,
@@ -13,10 +11,12 @@ import {
 } from "../components/Form";
 
 const Index = () => {
-  const dispatch = useDispatch();
-
   const handleChange = (e) => {
-    setState((state) => ({ ...state, [e.target.name]: e.target.value }));
+    if (e.target.files) {
+      setState((state) => ({ ...state, attachment: e.target.files[0] }));
+    } else {
+      setState((state) => ({ ...state, [e.target.name]: e.target.value }));
+    }
   };
 
   const [state, setState] = useState({
@@ -41,29 +41,24 @@ const Index = () => {
 
   const onSubmit = (e) => {
     e.preventDefault();
-    if (!state.user_id) {
-      window.location.assign("/register");
-    } else {
-      const formData = new FormData();
-      formData.append("user_id", state.user_id);
-      formData.append("title", state.title);
-      formData.append("description", state.description);
-      formData.append("date", state.date);
-      formData.append("city", state.city);
-      formData.append("destInstance", state.destInstance);
-      formData.append("attachment", state.attachment);
+    const formData = new FormData();
+    formData.append("user_id", state.user_id);
+    formData.append("title", state.title);
+    formData.append("description", state.description);
+    formData.append("date", state.date);
+    formData.append("city", state.city);
+    formData.append("destInstance", state.destInstance);
+    formData.append("attachment", state.attachment);
 
-      const url = "https://id-report-id.herokuapp.com/complaint";
-      axios
-        .post(url, formData)
-        .then((data) => {
-          window.location.assign("/report");
-        })
-        .catch((err) => {
-          throw err;
-        });
-      dispatch(ADD_REPORT(state));
-    }
+    const url = "https://id-report-id.herokuapp.com/complaint";
+    axios
+      .post(url, formData)
+      .then((data) => {
+        window.location.assign("/report");
+      })
+      .catch((err) => {
+        throw err;
+      });
   };
 
   const handleCopyrightYear = () => {
@@ -136,7 +131,7 @@ const Index = () => {
             </ul>
           </div>
           <div className="col-md-7 ms-auto">
-            <Form extClass="rounded shadow bg-light p-4" onSubmit={onSubmit}>
+            <Form onSubmit={onSubmit} extClass="bg-light shadow rounded p-4">
               <InputGroup
                 input={{
                   name: "title",

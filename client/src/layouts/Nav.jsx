@@ -1,5 +1,4 @@
-import { useEffect, useState } from "react";
-import { Fragment } from "react";
+import { Fragment, useState, useEffect } from "react";
 import axios from "axios";
 import { Navbar, NavbarList, NavbarItem } from "../components/Navbar";
 import {
@@ -111,7 +110,7 @@ export default function Nav({
       )
       .catch((err) => console.log(err));
   }, []);
-  
+
   const onSubmit = (e) => {
     e.preventDefault();
     const formData = new FormData();
