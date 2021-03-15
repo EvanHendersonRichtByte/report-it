@@ -29,6 +29,11 @@ export default function Report() {
         return "bg-warning";
     }
   };
+  const handleReportDeletion = (reportId) => {
+    console.log(reportId);
+    const url = `http://localhost:2021/complaint/${reportId}`;
+    axios.delete(url);
+  };
 
   return (
     <div className="container-fluid pt-4 ">
@@ -42,6 +47,7 @@ export default function Report() {
             </button>
           </div>
         </div>
+
         <div className="col-md-10">
           {state.report.length < 1 && <h4>No report available</h4>}
           {state.report &&
@@ -64,11 +70,18 @@ export default function Report() {
                     </p>
                     <button
                       type="button"
-                      className="btn btn-outline-primary"
+                      className="ms-auto btn btn-outline-primary"
                       data-bs-toggle="modal"
                       data-bs-target={`#rpt-modal-${data._id}`}
                     >
                       Detail
+                    </button>
+                    <button
+                      type="submit"
+                      className="btn text-danger"
+                      onClick={handleReportDeletion.bind(data._id)}
+                    >
+                      <i className="bi bi-trash"></i>
                     </button>
                     <div
                       className="modal fade"
@@ -92,7 +105,8 @@ export default function Report() {
                           </div>
                           <div className="modal-body">
                             <img
-                              src={`https://id-report-id.herokuapp.com/uploads/${data.attachment}`}
+                              // src={`https://id-report-id.herokuapp.com/image/${data.attachment}`}
+                              src={`http://localhost:2021/image/${data.attachment}`}
                               alt={data.title}
                               className="img-fluid"
                             />

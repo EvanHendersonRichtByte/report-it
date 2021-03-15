@@ -41,6 +41,9 @@ const Index = () => {
 
   const onSubmit = (e) => {
     e.preventDefault();
+    if (!state.user_id) {
+      return window.location.assign("/login");
+    }
     const formData = new FormData();
     formData.append("user_id", state.user_id);
     formData.append("title", state.title);
@@ -48,9 +51,11 @@ const Index = () => {
     formData.append("date", state.date);
     formData.append("city", state.city);
     formData.append("destInstance", state.destInstance);
+    formData.append("attachment_id", "x");
     formData.append("attachment", state.attachment);
 
     const url = "https://id-report-id.herokuapp.com/complaint";
+
     axios
       .post(url, formData)
       .then((data) => {

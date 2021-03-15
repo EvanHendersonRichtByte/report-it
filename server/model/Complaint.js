@@ -6,6 +6,7 @@ module.exports = Complaint = ({ model, Schema }) => {
     complaint_date: { type: Date, default: Date.now() },
     city: String,
     destInstance: String,
+    attachment_id: String,
     attachment: String,
     status: { type: String, default: "Pending" },
   });

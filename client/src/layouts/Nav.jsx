@@ -120,6 +120,7 @@ export default function Nav({
     formData.append("date", state.date);
     formData.append("city", state.city);
     formData.append("destInstance", state.destInstance);
+    formData.append("attachment_id", "x");
     formData.append("attachment", state.attachment);
 
     const url = "https://id-report-id.herokuapp.com/complaint";
