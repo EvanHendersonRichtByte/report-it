@@ -42,7 +42,7 @@ export default function Report() {
           <h5 className="text-center border-bottom pb-3">Reports</h5>
           <div className="row">
             <button className="btn btn-transparent d-flex justify-content-between">
-              <p className="d-inline-block">Report List</p>
+              <p className="d-inline-block">Your Reports</p>
               <span className="d-inline-block ms-auto">{">"}</span>
             </button>
           </div>
@@ -107,8 +107,7 @@ export default function Report() {
                           </div>
                           <div className="modal-body">
                             <img
-                              // src={`https://id-report-id.herokuapp.com/image/${data.attachment}`}
-                              src={`http://localhost:2021/image/${data.attachment}`}
+                              src={`https://id-report-id.herokuapp.com/image/${data.attachment}`}
                               alt={data.title}
                               className="img-fluid"
                             />
