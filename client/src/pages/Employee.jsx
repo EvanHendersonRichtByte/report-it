@@ -45,8 +45,8 @@ export default function Employee() {
     if (confirmVal) {
       // Update Logic
       const employee_id = JSON.parse(sessionStorage.getItem("id"));
-      const updateReportUrl = `http://localhost:2021/complaint/${data._id}`;
-      const updateEmployeeUrl = `http://localhost:2021/user/${employee_id}`;
+      const updateReportUrl = `https://id-report-id.herokuapp.com/complaint/${data._id}`;
+      const updateEmployeeUrl = `https://id-report-id.herokuapp.com/user/${employee_id}`;
       const status = "In Progress";
       const combineData = { ...data, employee_id, status };
       console.log(data._id);

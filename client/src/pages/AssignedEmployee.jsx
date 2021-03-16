@@ -7,9 +7,9 @@ export default function AssignedEmployee() {
     assignedReport: null,
   });
   useEffect(() => {
-    const getEmployeeUrl = `http://localhost:2021/user/${state.employee_id}`;
-    const getUserUrl = "http://localhost:2021/user/";
-    const getReportUrl = "http://localhost:2021/complaint/";
+    const getEmployeeUrl = `https://id-report-id.herokuapp.com/user/${state.employee_id}`;
+    const getUserUrl = "https://id-report-id.herokuapp.com/user/";
+    const getReportUrl = "https://id-report-id.herokuapp.com/complaint/";
     let assignedReport;
     axios
       .get(getEmployeeUrl)

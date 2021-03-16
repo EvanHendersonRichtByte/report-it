@@ -54,8 +54,7 @@ const Index = () => {
     formData.append("attachment_id", "x");
     formData.append("attachment", state.attachment);
 
-    // const url = "https://id-report-id.herokuapp.com/complaint";
-    const url = "http://localhost:2021/complaint";
+    const url = "https://id-report-id.herokuapp.com/complaint";
     axios
       .post(url, formData)
       .then((data) => {

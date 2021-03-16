@@ -31,7 +31,7 @@ export default function Report() {
   };
   const handleReportDeletion = (reportId) => {
     console.log(reportId);
-    const url = `http://localhost:2021/complaint/${reportId}`;
+    const url = `https://id-report-id.herokuapp.com/complaint/${reportId}`;
     axios.delete(url);
   };
 
