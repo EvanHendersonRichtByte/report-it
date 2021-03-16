@@ -20,7 +20,7 @@ export default function AssignedEmployee() {
   };
 
   const handleStatusDeciding = (status) => {
-    const url = `http://localhost:2021/complaint/${state.assignedReport._id}`;
+    const url = `https://id-report-id.herokuapp.com/complaint/${state.assignedReport._id}`;
     axios
       .put(url, { status })
       .then(() => {
