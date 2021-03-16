@@ -54,8 +54,8 @@ const Index = () => {
     formData.append("attachment_id", "x");
     formData.append("attachment", state.attachment);
 
-    const url = "https://id-report-id.herokuapp.com/complaint";
-
+    // const url = "https://id-report-id.herokuapp.com/complaint";
+    const url = "http://localhost:2021/complaint";
     axios
       .post(url, formData)
       .then((data) => {
@@ -93,7 +93,7 @@ const Index = () => {
         <div className="row">
           <div className="col-md-4">
             <h2>Total Reports</h2>
-            <i className="overview__icon text-danger bi bi-alarm"></i>
+            <i className="overview__icon text-danger bi bi-file-check"></i>
             <h4>40.000</h4>
           </div>
           <div className="col-md-4">

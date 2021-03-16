@@ -54,7 +54,7 @@ module.exports = (app, handler) => {
   });
 
   app.get("/complaint/:id", (req, res) => {
-    Complaint.find({ _id: req.params.id }, (err, complaints) =>
+    Complaint.findOne({ _id: req.params.id }, (err, complaints) =>
       handler(res, complaints, err)
     );
   });

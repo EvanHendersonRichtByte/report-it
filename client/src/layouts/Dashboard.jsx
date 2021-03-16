@@ -11,7 +11,7 @@ export default function Dashboard(props) {
             <h5 className="text-center border-bottom pb-3">Reports</h5>
             <div className="row h-100 d-flex flex-column">
               <a
-                href="/"
+                href="/employee"
                 className="p btn btn-transparent d-flex justify-content-between text-dark "
               >
                 <p className="d-inline-block">Report List</p>
@@ -20,7 +20,7 @@ export default function Dashboard(props) {
                 </span>
               </a>
               <a
-                href="/"
+                href="/employee/assigned"
                 className="p btn btn-transparent d-flex justify-content-between text-dark "
               >
                 <p className="d-inline-block">Assigned Report</p>

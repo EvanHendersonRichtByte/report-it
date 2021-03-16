@@ -3,7 +3,7 @@ module.exports = Employee = ({ model, Schema }) => {
     name: String,
     username: String,
     password: String,
-    level: String,
+    level: { type: String, default: "Employee" },
     telephone: String,
   });
   return (Employee = model("Employee", EmployeeSchema));
