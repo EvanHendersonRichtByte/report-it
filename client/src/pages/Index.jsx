@@ -22,6 +22,7 @@ const Index = () => {
   const [state, setState] = useState({
     kota: [],
     user_id: JSON.parse(sessionStorage.getItem("id")),
+    level: JSON.parse(sessionStorage.getItem("level")),
     title: "",
     description: "",
     date: "",
@@ -43,6 +44,9 @@ const Index = () => {
     e.preventDefault();
     if (!state.user_id) {
       return window.location.assign("/login");
+    } else if (state.level !== "User") {
+      window.confirm("You must Logged as user to post complaint");
+      window.location.assign("/employee");
     }
     const formData = new FormData();
     formData.append("user_id", state.user_id);

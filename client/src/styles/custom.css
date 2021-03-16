@@ -48,3 +48,27 @@
   background-color: #000;
   color: #fff;
 }
+
+.decide .decide__left-button {
+  border-radius: 0.5rem 0 0 0.5rem;
+  padding-right: 1rem;
+}
+
+.decide span {
+  background-color: white;
+  border-radius: 50%;
+  position: absolute;
+  padding: 0 .1rem .1rem .1rem;
+  top: 50%;
+  left: 49.8%;
+  text-align: center;
+  vertical-align: middle;
+  font-size: 0.8rem;
+  display: flex;
+  transform: translate(-50%, -50%);
+}
+
+.decide .decide__right-button {
+  border-radius: 0 0.5rem 0.5rem 0;
+  padding-left: 1rem;
+}

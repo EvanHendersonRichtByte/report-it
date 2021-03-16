@@ -1,7 +1,9 @@
-import { Fragment } from "react";
+import { useEffect, Fragment } from "react";
 import Nav from "./Nav";
+import pageAuth from "../handler/pageAuth";
 
 export default function Dashboard(props) {
+  useEffect(() => pageAuth("Employee"), []);
   return (
     <Fragment>
       <Nav extClass="border-bottom" />

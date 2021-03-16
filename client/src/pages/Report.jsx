@@ -23,7 +23,7 @@ export default function Report() {
         return "bg-primary";
       case "Approved":
         return "bg-success";
-      case "Disaproved":
+      case "Rejected":
         return "bg-danger";
       default:
         return "bg-warning";
@@ -76,13 +76,15 @@ export default function Report() {
                     >
                       Detail
                     </button>
-                    <button
-                      type="submit"
-                      className="btn text-danger"
-                      onClick={handleReportDeletion.bind(data._id)}
-                    >
-                      <i className="bi bi-trash"></i>
-                    </button>
+                    {data.status === "Pending" && (
+                      <button
+                        type="submit"
+                        className="btn text-danger"
+                        onClick={handleReportDeletion.bind(data._id)}
+                      >
+                        <i className="bi bi-trash"></i>
+                      </button>
+                    )}
                     <div
                       className="modal fade"
                       id={`rpt-modal-${data._id}`}

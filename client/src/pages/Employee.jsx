@@ -1,11 +1,9 @@
 import axios from "axios";
 import { useState, useEffect, Fragment } from "react";
-import pageAuth from "../handler/pageAuth";
 export default function Employee() {
   const [state, setState] = useState({ report: [] });
 
   useEffect(() => {
-    pageAuth("Employee");
     let arr = [];
     axios
       .get(`https://id-report-id.herokuapp.com/complaint`)
@@ -31,7 +29,7 @@ export default function Employee() {
         return "bg-primary";
       case "Approved":
         return "bg-success";
-      case "Disaproved":
+      case "Rejected":
         return "bg-danger";
       default:
         return "bg-warning";
@@ -78,98 +76,104 @@ export default function Employee() {
       {state.report &&
         state.report.map((data, id) => {
           data.complaint_date = new Date(data.complaint_date).toDateString();
-          return (
-            <div className="card mb-3" key={id}>
-              <div className="card-body d-flex justify-content-between align-items-center">
-                <p className="d-inline mb-0">
-                  {" "}
-                  {data.title}
-                  <span className={`badge ${handleStatus(data)} ms-2`}>
-                    {data.status}
-                  </span>
-                  <code className="ms-3">Posted on {data.complaint_date}</code>
-                </p>
-                <button
-                  type="button"
-                  className="btn btn-outline-primary"
-                  data-bs-toggle="modal"
-                  data-bs-target={`#rpt-modal-${data._id}`}
-                >
-                  Detail
-                </button>
-                <div
-                  className="modal fade"
-                  id={`rpt-modal-${data._id}`}
-                  tabIndex="-1"
-                  aria-labelledby="exampleModalLabel"
-                  aria-hidden="true"
-                >
-                  <div className="modal-dialog modal-xl modal-dialog-scrollable">
-                    <div className="modal-content">
-                      <div className="modal-header">
-                        <h5 className="modal-title" id="exampleModalLabel">
-                          {data.title}
-                        </h5>
-                        <button
-                          type="button"
-                          className="btn-close"
-                          data-bs-dismiss="modal"
-                          aria-label="Close"
-                        ></button>
-                      </div>
-                      <div className="modal-body" id="download">
-                        <div className="container-fluid ps-0">
-                          <div className="row">
-                            <div className="col-md-4">
-                              <img
-                                src={`https://id-report-id.herokuapp.com/image/${data.attachment}`}
-                                alt={data.title}
-                                className="img-fluid"
-                              />
-                            </div>
-                            <div className="col-md-8">
-                              <div className="row">
-                                <div className="col-md-6">
-                                  <h5>Description:</h5>
-                                  <p>{data.description}</p>
-                                  <p>City: {data.city}</p>
-                                  <p>Instance: {data.destInstance}</p>
-                                </div>
-                                <div className="col-md-6">
-                                  <h5>User:</h5>
-                                  <p>Name : {data.username}</p>
-                                  <p>City : {data.city}</p>
-                                  <p>Email : {data.email}</p>
-                                  <p>Telephone: {data.telephone}</p>
-                                </div>
+          if (data.status === "Pending") {
+            return (
+              <div className="card mb-3" key={id}>
+                <div className="card-body d-flex justify-content-between align-items-center">
+                  <p className="d-inline mb-0">
+                    {" "}
+                    {data.title}
+                    <span className={`badge ${handleStatus(data)} ms-2`}>
+                      {data.status}
+                    </span>
+                    <code className="ms-3">
+                      Posted on {data.complaint_date}
+                    </code>
+                  </p>
+                  <button
+                    type="button"
+                    className="btn btn-outline-primary"
+                    data-bs-toggle="modal"
+                    data-bs-target={`#rpt-modal-${data._id}`}
+                  >
+                    Detail
+                  </button>
+                  <div
+                    className="modal fade"
+                    id={`rpt-modal-${data._id}`}
+                    tabIndex="-1"
+                    aria-labelledby="exampleModalLabel"
+                    aria-hidden="true"
+                  >
+                    <div className="modal-dialog modal-xl modal-dialog-scrollable">
+                      <div className="modal-content">
+                        <div className="modal-header">
+                          <h5 className="modal-title" id="exampleModalLabel">
+                            {data.title}
+                          </h5>
+                          <button
+                            type="button"
+                            className="btn-close"
+                            data-bs-dismiss="modal"
+                            aria-label="Close"
+                          ></button>
+                        </div>
+                        <div className="modal-body" id="download">
+                          <div className="container-fluid ps-0">
+                            <div className="row">
+                              <div className="col-md-4">
+                                <img
+                                  src={`https://id-report-id.herokuapp.com/image/${data.attachment}`}
+                                  alt={data.title}
+                                  className="img-fluid"
+                                />
                               </div>
-                              <div className="col-md-12 pt-5">
-                                <button
-                                  onClick={() => handleDownloadDoc(data)}
-                                  className="btn btn-block btn-success"
-                                  id="deleteDis"
-                                >
-                                  Download Document
-                                </button>
+                              <div className="col-md-8">
+                                <div className="row">
+                                  <div className="col-md-6">
+                                    <h5>Description:</h5>
+                                    <p>{data.description}</p>
+                                    <p>City: {data.city}</p>
+                                    <p>Instance: {data.destInstance}</p>
+                                  </div>
+                                  <div className="col-md-6">
+                                    <h5>User:</h5>
+                                    <p>Name : {data.username}</p>
+                                    <p>City : {data.city}</p>
+                                    <p>Email : {data.email}</p>
+                                    <p>Telephone: {data.telephone}</p>
+                                  </div>
+                                </div>
+                                <div className="col-md-12 pt-5">
+                                  <button
+                                    onClick={() => handleDownloadDoc(data)}
+                                    className="btn btn-block btn-success"
+                                    id="deleteDis"
+                                  >
+                                    Download Document
+                                  </button>
+                                </div>
                               </div>
                             </div>
                           </div>
                         </div>
-                      </div>
-                      <div className="modal-footer">
-                        <p className="me-auto ms-2">
-                          Posted on {data.complaint_date}
-                        </p>
-                        <span className={`badge ${handleStatus(data)} `}>
-                          {data.status}
-                        </span>
+                        <div className="modal-footer">
+                          <p className="me-auto ms-2">
+                            Posted on {data.complaint_date}
+                          </p>
+                          <span className={`badge ${handleStatus(data)} `}>
+                            {data.status}
+                          </span>
+                        </div>
                       </div>
                     </div>
                   </div>
                 </div>
               </div>
-            </div>
-          );
+            );
+          } else {
+            return " ";
+          }
         })}
     </Fragment>
   );
