@@ -30,9 +30,9 @@ export default function Report() {
     }
   };
   const handleReportDeletion = (reportId) => {
-    console.log(reportId);
     const url = `https://id-report-id.herokuapp.com/complaint/${reportId}`;
     axios.delete(url);
+    window.location.reload();
   };
 
   return (
@@ -76,15 +76,16 @@ export default function Report() {
                     >
                       Detail
                     </button>
-                    {data.status === "Pending" && (
-                      <button
-                        type="submit"
-                        className="btn text-danger"
-                        onClick={handleReportDeletion.bind(data._id)}
-                      >
-                        <i className="bi bi-trash"></i>
-                      </button>
-                    )}
+                    {data.status === "Pending" ||
+                      (data.status === "Rejected" && (
+                        <button
+                          type="submit"
+                          className="btn text-danger"
+                          onClick={() => handleReportDeletion(data._id)}
+                        >
+                          <i className="bi bi-trash"></i>
+                        </button>
+                      ))}
                     <div
                       className="modal fade"
                       id={`rpt-modal-${data._id}`}
@@ -106,11 +107,13 @@ export default function Report() {
                             ></button>
                           </div>
                           <div className="modal-body">
-                            <img
-                              src={`https://id-report-id.herokuapp.com/image/${data.attachment}`}
-                              alt={data.title}
-                              className="img-fluid"
-                            />
+                            {data.attachment !== "null" && (
+                              <img
+                                src={`https://id-report-id.herokuapp.com/image/${data.attachment}`}
+                                alt={data.title}
+                                className="img-fluid"
+                              />
+                            )}
                             <div className="container-fluid p-3 d-flex">
                               <div className="row">
                                 <h5>Description:</h5>

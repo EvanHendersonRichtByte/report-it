@@ -33,8 +33,10 @@ const upload = multer({ storage });
 
 module.exports = (app, handler) => {
   app.post("/complaint", upload.single("attachment"), (req, res) => {
-    req.body.attachment_id = String(req.file.id);
-    req.body["attachment"] = req.file.filename;
+    if (req.file) {
+      req.body.attachment_id = String(req.file.id);
+      req.body["attachment"] = req.file.filename;
+    }
     Complaint.create(req.body, (err) => handler(res, "Complaint created", err));
   });
 
@@ -66,11 +68,22 @@ module.exports = (app, handler) => {
   });
 
   app.delete("/complaint/:id", (req, res) => {
-    console.log(req.params.id);
-    Complaint.findOne({ _id: req.params.id }, (err, data) => {});
-
-    // Complaint.deleteOne({ _id: req.params.id }, () =>
-    //   handler(res, "Complaint deleted", "Cannot delete complaint data")
-    // );
+    Complaint.findOne({ _id: req.params.id }, (err, { attachment_id }) => {
+      if (attachment_id !== "x") {
+        Complaint.deleteOne({ _id: req.params.id }, () => {
+          gfs.delete(
+            new mongoose.Types.ObjectId(attachment_id),
+            (err, data) => {
+              if (err) return res.status(404).json({ err: err.message });
+            }
+          );
+          handler(res, "Complaint deleted", "Cannot delete complaint data");
+        });
+      } else {
+        Complaint.deleteOne({ _id: req.params.id }, () => {
+          handler(res, "Complaint deleted", "Cannot delete complaint data");
+        });
+      }
+    });
   });
 };
