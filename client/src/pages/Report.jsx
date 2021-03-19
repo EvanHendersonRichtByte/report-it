@@ -93,43 +93,126 @@ export default function Report() {
                       aria-labelledby="exampleModalLabel"
                       aria-hidden="true"
                     >
-                      <div className="modal-dialog modal-dialog-scrollable">
-                        <div className="modal-content">
-                          <div className="modal-header">
-                            <h5 className="modal-title" id="exampleModalLabel">
-                              {data.title}
-                            </h5>
-                            <button
-                              type="button"
-                              className="btn-close"
-                              data-bs-dismiss="modal"
-                              aria-label="Close"
-                            ></button>
-                          </div>
+                      <div className="modal-dialog modal-xl">
+                        <div className="modal-content bg-transparent border-0">
                           <div className="modal-body">
-                            {data.attachment !== "null" && (
-                              <img
-                                src={`https://id-report-id.herokuapp.com/image/${data.attachment}`}
-                                alt={data.title}
-                                className="img-fluid"
-                              />
-                            )}
-                            <div className="container-fluid p-3 d-flex">
+                            <div className="container-fluid">
                               <div className="row">
-                                <h5>Description:</h5>
-                                <p>{data.description}</p>
-                                <p>City: {data.city}</p>
-                                <p>Instance: {data.destInstance}</p>
+                                <div className="complaint col-md-6 bg-light shadow rounded p-0 vh-100">
+                                  {data.attachment !== "null" && (
+                                    <img
+                                      src={`https://id-report-id.herokuapp.com/image/${data.attachment}`}
+                                      alt={data.title}
+                                      className="img-fluid"
+                                    />
+                                  )}
+                                  <div className="container-fluid p-3 d-flex">
+                                    <div className="row">
+                                      <h4>{data.title}</h4>
+                                      <p>{data.description}</p>
+                                      <p>City: {data.city}</p>
+                                      <p>Instance: {data.destInstance}</p>
+                                      <div className="col-md-12 d-flex justify-content-between align-items-center">
+                                        <p className="d-inline">
+                                          Posted on {data.complaint_date}
+                                        </p>
+                                        <span
+                                          className={`ms-auto badge ${handleStatus(
+                                            data
+                                          )} `}
+                                        >
+                                          {data.status}
+                                        </span>
+                                      </div>
+                                    </div>
+                                  </div>
+                                </div>
+                                <div className="complaint col-md-5 vh-100 ms-auto rounded bg-light p-3">
+                                  <div className="complaint__box h-75">
+                                    <div className="complaint__bar d-flex flex-row p-2">
+                                      <div className="col-md-8">
+                                        <p>
+                                          Lorem ipsum dolor sit amet,
+                                          consectetur adipisicing elit. Rem
+                                          repudiandae animi doloremque, quam
+                                          deleniti hic, veritatis molestias ipsa
+                                          totam, consectetur obcaecati! Corrupti
+                                          perferendis nisi distinctio dolorem
+                                          quam eius laboriosam doloribus.
+                                        </p>
+                                      </div>
+                                      <div className="col-md-4 text-end">
+                                        <p>From Admin</p>
+                                      </div>
+                                    </div>
+                                    <div className="complaint__bar d-flex flex-row p-2">
+                                      <div className="col-md-8">
+                                        <p>
+                                          Lorem ipsum dolor sit amet,
+                                          consectetur adipisicing elit. Rem
+                                          repudiandae animi doloremque, quam
+                                          deleniti hic, veritatis molestias ipsa
+                                          totam, consectetur obcaecati! Corrupti
+                                          perferendis nisi distinctio dolorem
+                                          quam eius laboriosam doloribus.
+                                        </p>
+                                      </div>
+                                      <div className="col-md-4 text-end">
+                                        <p>From Admin</p>
+                                      </div>
+                                    </div>
+                                    <div className="complaint__bar d-flex flex-row p-2">
+                                      <div className="col-md-8">
+                                        <p>
+                                          Lorem ipsum dolor sit amet,
+                                          consectetur adipisicing elit. Rem
+                                          repudiandae animi doloremque, quam
+                                          deleniti hic, veritatis molestias ipsa
+                                          totam, consectetur obcaecati! Corrupti
+                                          perferendis nisi distinctio dolorem
+                                          quam eius laboriosam doloribus.
+                                        </p>
+                                      </div>
+                                      <div className="col-md-4 text-end">
+                                        <p>From Admin</p>
+                                      </div>
+                                    </div>
+                                    <div className="complaint__bar d-flex flex-row p-2">
+                                      <div className="col-md-8">
+                                        <p>
+                                          Lorem ipsum dolor sit amet,
+                                          consectetur adipisicing elit. Rem
+                                          repudiandae animi doloremque, quam
+                                          deleniti hic, veritatis molestias ipsa
+                                          totam, consectetur obcaecati! Corrupti
+                                          perferendis nisi distinctio dolorem
+                                          quam eius laboriosam doloribus.
+                                        </p>
+                                      </div>
+                                      <div className="col-md-4 text-end">
+                                        <p>From Admin</p>
+                                      </div>
+                                    </div>
+                                  </div>
+                                  <div className="complaint__input border-top h-25 d-flex flex-column p-4">
+                                    <p>Add Response</p>
+                                    <input
+                                      className="form-control"
+                                      type="text"
+                                      name="response"
+                                    />
+                                    <div className="col-md-12 text-end pt-3">
+                                      <button
+                                        className="btn btn-sm btn-danger"
+                                        type="submit"
+                                      >
+                                        Submit
+                                      </button>
+                                    </div>
+                                  </div>
+                                </div>
                               </div>
                             </div>
-                          </div>
-                          <div className="modal-footer">
-                            <p className="me-auto ms-2">
-                              Posted on {data.complaint_date}
-                            </p>
-                            <span className={`badge ${handleStatus(data)} `}>
-                              {data.status}
-                            </span>
                           </div>
                         </div>
                       </div>

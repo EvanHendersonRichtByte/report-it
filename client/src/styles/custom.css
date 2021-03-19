@@ -1,3 +1,13 @@
+::-webkit-scrollbar {
+  width: 5px;
+  position: absolute;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #dc3545;
+  border-radius: 10px;
+}
+
 .home {
   background: linear-gradient(
       to bottom right,
@@ -58,7 +68,7 @@
   background-color: white;
   border-radius: 50%;
   position: absolute;
-  padding: 0 .1rem .1rem .1rem;
+  padding: 0 0.1rem 0.1rem 0.1rem;
   top: 50%;
   left: 49.8%;
   text-align: center;
@@ -71,4 +81,17 @@
 .decide .decide__right-button {
   border-radius: 0 0.5rem 0.5rem 0;
   padding-left: 1rem;
+}
+
+.complaint,
+.complaint__box {
+  overflow-y: scroll;
+}
+
+.complaint__bar:not(:last-of-type) {
+  border-bottom: 1px solid #dee2e6;
+}
+
+.complaint img {
+  border-top-left-radius: 2px;
 }
