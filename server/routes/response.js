@@ -1,7 +1,15 @@
 module.exports = (app, handler) => {
   app.post("/response", (req, res) => {
-    Response.create(req.body, (response) => {
-      handler(res, "Response has been created!", "Failed");
+    Response.create(req.body, (err, response) => {
+      Complaint.findOne({ _id: response.complaint_id }, (err, responseData) => {
+        Complaint.updateOne(
+          { _id: response.complaint_id },
+          { response: [...responseData.response, response._id] },
+          (err, data) => {
+            handler(res, data, err);
+          }
+        );
+      });
     });
   });
   app.get("/response", (req, res) => {
@@ -9,10 +17,13 @@ module.exports = (app, handler) => {
       handler(res, response, "Failed to get response");
     });
   });
-  app.get("/response/:id", (req, res) => {
-    Response.find({ _id: req.params.id }, (err, response) => {
-      handler(res, response, "Failed to get individual response");
-    });
+  app.get("/response/:complaint_id", (req, res) => {
+    Response.find(
+      { complaint_id: req.params.complaint_id },
+      (err, response) => {
+        handler(res, response, "Failed to get individual response");
+      }
+    );
   });
   app.put("/response/:id", (req, res) => {
     Response.updateOne({ _id: req.params.id }, req.body, () => {

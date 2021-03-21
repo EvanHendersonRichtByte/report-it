@@ -42,9 +42,13 @@ module.exports = (app, handler) => {
     });
   });
   app.get("/user/:id", (req, res) => {
-    User.findById(req.params.id, (err, data) => {
-      handler(res, data, "Failed when getting user data");
-    });
+    User.findById(req.params.id)
+      .populate("assigned_report")
+      .populate({
+        path: "assigned_report",
+        populate: { path: "response", populate: "user_id" },
+      })
+      .exec((err, data) => handler(res, data, "Failed when getting user data"));
   });
   app.put("/user/:id", (req, res) => {
     User.updateOne({ _id: req.params.id }, req.body, (err, data) => {
@@ -57,8 +61,11 @@ module.exports = (app, handler) => {
     });
   });
   app.get("/user/:id/complaint", (req, res) => {
-    Complaint.find({ user_id: req.params.id }, (err, data) => {
-      handler(res, data, err);
-    });
+    Complaint.find({ author: req.params.id })
+      .populate("response")
+      .populate({ path: "response", populate: { path: "user_id" } })
+      .exec((err, data) => {
+        handler(res, data, err);
+      });
   });
 };

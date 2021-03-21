@@ -6,6 +6,7 @@ import SideImage from "../assets/img/register-side.jpg";
 import axios from "axios";
 export default function Register() {
   const [state, setState] = useState({
+    assigned_report: null,
     username: "",
     email: "",
     telephone: "",
@@ -22,8 +23,8 @@ export default function Register() {
   const handleSubmit = (e) => {
     e.preventDefault();
     if (state.password === state.confirmPassword) {
-      const url = "https://id-report-id.herokuapp.com/user";
-      
+      // const url = "https://id-report-id.herokuapp.com/user";
+      const url = "http://localhost:2021/user";
       dispatch(REGISTER(state));
       axios
         .post(url, state)

@@ -114,7 +114,7 @@ export default function Nav({
   const onSubmit = (e) => {
     e.preventDefault();
     const formData = new FormData();
-    formData.append("user_id", state.user_id);
+    formData.append("author", state.user_id);
     formData.append("title", state.title);
     formData.append("description", state.description);
     formData.append("date", state.date);
@@ -123,7 +123,8 @@ export default function Nav({
     formData.append("attachment_id", "x");
     formData.append("attachment", state.attachment);
 
-    const url = "https://id-report-id.herokuapp.com/complaint";
+    // const url = "https://id-report-id.herokuapp.com/complaint";
+    const url = "http://localhost:2021/complaint";
     axios
       .post(url, formData)
       .then((data) => {

@@ -4,6 +4,7 @@ const mongoose = require("mongoose");
 const GridFsStorage = require("multer-gridfs-storage");
 const multer = require("multer");
 const { mongodbURI } = require("../config/config.json");
+const { response } = require("express");
 
 // REFACTOR ???
 let gfs;
@@ -52,7 +53,15 @@ module.exports = (app, handler) => {
   });
 
   app.get("/complaint", (req, res) => {
-    Complaint.find({}, (err, complaints) => handler(res, complaints, err));
+    Complaint.find({})
+      .populate("author")
+      .populate({
+        path: "response",
+        populate: { path: "user_id" },
+      })
+      .exec((err, complaints) => {
+        handler(res, complaints, err);
+      });
   });
 
   app.get("/complaint/:id", (req, res) => {

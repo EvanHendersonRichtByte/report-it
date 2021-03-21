@@ -5,17 +5,22 @@ export default function Report() {
   const [state, setState] = useState({
     report: [],
     userId: JSON.parse(sessionStorage.getItem("id")),
+    response: "",
   });
 
   useEffect(() => {
     pageAuth("User");
+    handleGetReportData();
+  });
+
+  const handleGetReportData = () => {
+    // const userComplaintUrl = `https://id-report-id.herokuapp.com/user/${state.userId}/complaint`;
+    const userComplaintUrl = `http://localhost:2021/user/${state.userId}/complaint`;
     axios
-      .get(`https://id-report-id.herokuapp.com/user/${state.userId}/complaint`)
-      .then(({ data }) => setState((state) => ({ ...state, report: data })))
-      .catch((err) => {
-        throw err;
-      });
-  }, [state.userId]);
+      .get(userComplaintUrl)
+      .then(({ data: report }) => setState((state) => ({ ...state, report })))
+      .catch((err) => console.log(err));
+  };
 
   const handleStatus = ({ status }) => {
     switch (status) {
@@ -29,10 +34,29 @@ export default function Report() {
         return "bg-warning";
     }
   };
+
+  const handleChange = (e) => {
+    setState((state) => ({ ...state, [e.target.name]: e.target.value }));
+  };
+
   const handleReportDeletion = (reportId) => {
     const url = `https://id-report-id.herokuapp.com/complaint/${reportId}`;
     axios.delete(url);
     window.location.reload();
+  };
+
+  const handleResponseSubmit = (reportId) => {
+    // const url = `https://id-report-id.herokuapp.com/response/`;
+    const url = `http://localhost:2021/response/`;
+    const responseData = {
+      complaint_id: reportId,
+      response_text: state.response,
+      user_id: state.userId,
+    };
+    axios
+      .post(url, responseData)
+      .then((data) => handleGetReportData())
+      .catch((err) => console.log(err));
   };
 
   return (
@@ -49,7 +73,7 @@ export default function Report() {
         </div>
 
         <div className="col-md-10">
-          {state.report.length < 1 && <h4>No report available</h4>}
+          {state.report && <h4>No report available</h4>}
           {state.report &&
             state.report.map((data, id) => {
               data.complaint_date = new Date(
@@ -129,70 +153,20 @@ export default function Report() {
                                 </div>
                                 <div className="complaint col-md-5 vh-100 ms-auto rounded bg-light p-3">
                                   <div className="complaint__box h-75">
-                                    <div className="complaint__bar d-flex flex-row p-2">
-                                      <div className="col-md-8">
-                                        <p>
-                                          Lorem ipsum dolor sit amet,
-                                          consectetur adipisicing elit. Rem
-                                          repudiandae animi doloremque, quam
-                                          deleniti hic, veritatis molestias ipsa
-                                          totam, consectetur obcaecati! Corrupti
-                                          perferendis nisi distinctio dolorem
-                                          quam eius laboriosam doloribus.
-                                        </p>
-                                      </div>
-                                      <div className="col-md-4 text-end">
-                                        <p>From Admin</p>
-                                      </div>
-                                    </div>
-                                    <div className="complaint__bar d-flex flex-row p-2">
-                                      <div className="col-md-8">
-                                        <p>
-                                          Lorem ipsum dolor sit amet,
-                                          consectetur adipisicing elit. Rem
-                                          repudiandae animi doloremque, quam
-                                          deleniti hic, veritatis molestias ipsa
-                                          totam, consectetur obcaecati! Corrupti
-                                          perferendis nisi distinctio dolorem
-                                          quam eius laboriosam doloribus.
-                                        </p>
-                                      </div>
-                                      <div className="col-md-4 text-end">
-                                        <p>From Admin</p>
-                                      </div>
-                                    </div>
-                                    <div className="complaint__bar d-flex flex-row p-2">
-                                      <div className="col-md-8">
-                                        <p>
-                                          Lorem ipsum dolor sit amet,
-                                          consectetur adipisicing elit. Rem
-                                          repudiandae animi doloremque, quam
-                                          deleniti hic, veritatis molestias ipsa
-                                          totam, consectetur obcaecati! Corrupti
-                                          perferendis nisi distinctio dolorem
-                                          quam eius laboriosam doloribus.
-                                        </p>
-                                      </div>
-                                      <div className="col-md-4 text-end">
-                                        <p>From Admin</p>
-                                      </div>
-                                    </div>
-                                    <div className="complaint__bar d-flex flex-row p-2">
-                                      <div className="col-md-8">
-                                        <p>
-                                          Lorem ipsum dolor sit amet,
-                                          consectetur adipisicing elit. Rem
-                                          repudiandae animi doloremque, quam
-                                          deleniti hic, veritatis molestias ipsa
-                                          totam, consectetur obcaecati! Corrupti
-                                          perferendis nisi distinctio dolorem
-                                          quam eius laboriosam doloribus.
-                                        </p>
-                                      </div>
-                                      <div className="col-md-4 text-end">
-                                        <p>From Admin</p>
-                                      </div>
-                                    </div>
+                                    {data.response &&
+                                      data.response.map((e, i) => (
+                                        <div
+                                          key={i}
+                                          className="complaint__bar d-flex flex-row p-2"
+                                        >
+                                          <div className="col-md-8">
+                                            <p>{e.response_text}</p>
+                                          </div>
+                                          <div className="col-md-4 text-end">
+                                            <p>From {e.user_id.username}</p>
+                                          </div>
+                                        </div>
+                                      ))}
                                   </div>
                                   <div className="complaint__input border-top h-25 d-flex flex-column p-4">
                                     <p>Add Response</p>
@@ -200,9 +174,14 @@ export default function Report() {
                                       className="form-control"
                                       type="text"
                                       name="response"
+                                      onChange={handleChange}
+                                      required
                                     />
                                     <div className="col-md-12 text-end pt-3">
                                       <button
+                                        onClick={() =>
+                                          handleResponseSubmit(data._id)
+                                        }
                                         className="btn btn-sm btn-danger"
                                         type="submit"
                                       >

@@ -4,23 +4,33 @@ export default function Employee() {
   const [state, setState] = useState({ report: [] });
 
   useEffect(() => {
-    let arr = [];
+    const reportUrl = "http://localhost:2021/complaint";
     axios
-      .get(`https://id-report-id.herokuapp.com/complaint`)
-      .then(({ data }) => {
-        data.forEach((i) => {
-          axios
-            .get(`https://id-report-id.herokuapp.com/user/${i.user_id}`)
-            .then((f) => {
-              const { _id, ...other } = f.data;
-              arr = [...arr, { ...i, ...other }];
-              setState((state) => ({ ...state, report: arr }));
-            });
-        });
+      .get(reportUrl)
+      .then(({ data: report }) => {
+        setState((state) => ({ ...state, report }));
       })
-      .catch((err) => {
-        throw err;
-      });
+      .catch((err) => console.log(err));
+
+    // Native Solution
+
+    // let arr = [];
+    // axios
+    //   .get(`https://id-report-id.herokuapp.com/complaint`)
+    //   .then(({ data }) => {
+    //     data.forEach((i) => {
+    //       axios
+    //         .get(`https://id-report-id.herokuapp.com/user/${i.user_id}`)
+    //         .then((f) => {
+    //           const { _id, ...other } = f.data;
+    //           arr = [...arr, { ...i, ...other }];
+    //           setState((state) => ({ ...state, report: arr }));
+    //         });
+    //     });
+    //   })
+    //   .catch((err) => {
+    //     throw err;
+    //   });
   }, []);
 
   const handleStatus = ({ status }) => {
@@ -44,15 +54,16 @@ export default function Employee() {
       // Update Logic
       const employee_id = JSON.parse(sessionStorage.getItem("id"));
       const updateReportUrl = `https://id-report-id.herokuapp.com/complaint/${data._id}`;
-      const updateEmployeeUrl = `https://id-report-id.herokuapp.com/user/${employee_id}`;
+      // const updateEmployeeUrl = `https://id-report-id.herokuapp.com/user/${employee_id}`;
+      const updateEmployeeUrl = `http://localhost:2021/user/${employee_id}`;
       const status = "In Progress";
       const combineData = { ...data, employee_id, status };
-      console.log(data._id);
+      console.log(data._id, combineData);
       axios
         .put(updateReportUrl, combineData)
         .then(() => {
           axios
-            .put(updateEmployeeUrl, { assigned_report_id: data._id })
+            .put(updateEmployeeUrl, { assigned_report: data._id })
             .then(() => {
               // Print Logic
               const printContents = document.getElementById("download")
@@ -62,7 +73,7 @@ export default function Employee() {
               document.getElementById("deleteDis").className += " d-none";
               window.print();
               document.body.innerHTML = originalContents;
-              window.location.reload();
+              // window.location.reload();
             })
             .catch((err) => console.log(err));
         })
@@ -122,11 +133,13 @@ export default function Employee() {
                           <div className="container-fluid ps-0">
                             <div className="row">
                               <div className="col-md-4">
-                                <img
-                                  src={`https://id-report-id.herokuapp.com/image/${data.attachment}`}
-                                  alt={data.title}
-                                  className="img-fluid"
-                                />
+                                {data.attachment && (
+                                  <img
+                                    src={`https://id-report-id.herokuapp.com/image/${data.attachment}`}
+                                    alt={data.title}
+                                    className="img-fluid"
+                                  />
+                                )}
                               </div>
                               <div className="col-md-8">
                                 <div className="row">
@@ -138,10 +151,9 @@ export default function Employee() {
                                   </div>
                                   <div className="col-md-6">
                                     <h5>User:</h5>
-                                    <p>Name : {data.username}</p>
-                                    <p>City : {data.city}</p>
-                                    <p>Email : {data.email}</p>
-                                    <p>Telephone: {data.telephone}</p>
+                                    <p>Name : {data.author.username}</p>
+                                    <p>Email : {data.author.email}</p>
+                                    <p>Telephone: {data.author.telephone}</p>
                                   </div>
                                 </div>
                                 <div className="col-md-12 pt-5">

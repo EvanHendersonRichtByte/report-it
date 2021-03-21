@@ -1,6 +1,6 @@
 module.exports = Complaint = ({ model, Schema }) => {
   const ComplaintSchema = new Schema({
-    user_id: String,
+    author: { type: Schema.Types.ObjectId, ref: "User" },
     employee_id: { type: String, default: null },
     title: String,
     description: String,
@@ -9,6 +9,7 @@ module.exports = Complaint = ({ model, Schema }) => {
     destInstance: String,
     attachment_id: String,
     attachment: String,
+    response: [{ type: Schema.Types.ObjectId, ref: "Response" }],
     status: { type: String, default: "Pending" },
   });
   return (Complaint = model("Complaint", ComplaintSchema));

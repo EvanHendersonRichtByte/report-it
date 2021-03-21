@@ -1,6 +1,6 @@
 module.exports = User = ({ model, Schema }) => {
   const UserSchema = new Schema({
-    assigned_report_id: { type: String, default: null },
+    assigned_report: { type: Schema.Types.ObjectId, ref: "Complaint" },
     name: String,
     username: String,
     password: String,
