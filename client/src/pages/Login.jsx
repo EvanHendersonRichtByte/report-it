@@ -38,9 +38,9 @@ export default function Login() {
       })
       .catch((err) => console.log(err));
   };
-
+  
   return (
-    <div className="d-flex vh-100 overflow-hidden">
+    <div className="lsp d-flex vh-100 overflow-hidden">
       <div className="col-sm-12 col-md-12 col-lg-6 align-self-center p-5">
         <Form extClass="shadow p-5 rounded" onSubmit={handleSubmit}>
           <h3>Login</h3>

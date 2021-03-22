@@ -95,3 +95,7 @@
 .complaint img {
   border-top-left-radius: 2px;
 }
+
+.loading-screen {
+  background: rgba(0, 0, 0, 0.8);
+}

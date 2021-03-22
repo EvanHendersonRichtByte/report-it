@@ -4,7 +4,7 @@ export default function Employee() {
   const [state, setState] = useState({ report: [] });
 
   useEffect(() => {
-    const reportUrl = "http://localhost:2021/complaint";
+    const reportUrl = "https://id-report-id.herokuapp.com/complaint";
     axios
       .get(reportUrl)
       .then(({ data: report }) => {
