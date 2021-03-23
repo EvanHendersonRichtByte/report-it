@@ -1,6 +1,8 @@
 import { Fragment, useState, useEffect } from "react";
 import axios from "axios";
 import Nav from "../layouts/Nav";
+import counterUp from "counterup2";
+import $ from "jquery";
 import {
   Form,
   Input,
@@ -9,6 +11,8 @@ import {
   Select,
   Textarea,
 } from "../components/Form";
+import { Waypoint } from "react-waypoint";
+import LoadingScreen from "../layouts/LoadingScreen";
 
 const Index = () => {
   const handleChange = (e) => {
@@ -31,6 +35,13 @@ const Index = () => {
     attachment: null,
   });
 
+  const handleWaypointEnter = () => {
+    const counterElement = document.querySelectorAll(".counter");
+    counterElement.forEach((item) => {
+      counterUp(item, { duration: 2000 });
+    });
+  };
+
   useEffect(() => {
     axios
       .get("https://dev.farizdotid.com/api/daerahindonesia/kota?id_provinsi=35")
@@ -41,32 +52,33 @@ const Index = () => {
   }, []);
 
   const onSubmit = (e) => {
+    $("#loading").removeClass("d-none");
     e.preventDefault();
     if (!state.user_id) {
       return window.location.assign("/login");
     } else if (state.level !== "User") {
       window.confirm("You must Logged as user to post complaint");
       window.location.assign("/employee");
+    } else {
+      const formData = new FormData();
+      formData.append("author", state.user_id);
+      formData.append("title", state.title);
+      formData.append("description", state.description);
+      formData.append("date", state.date);
+      formData.append("city", state.city);
+      formData.append("destInstance", state.destInstance);
+      formData.append("attachment_id", "x");
+      formData.append("attachment", state.attachment);
+      const url = "http://localhost:2021/complaint";
+      axios
+        .post(url, formData)
+        .then((data) => {
+          window.location.assign("/report");
+        })
+        .catch((err) => {
+          throw err;
+        });
     }
-    const formData = new FormData();
-    formData.append("user_id", state.user_id);
-    formData.append("title", state.title);
-    formData.append("description", state.description);
-    formData.append("date", state.date);
-    formData.append("city", state.city);
-    formData.append("destInstance", state.destInstance);
-    formData.append("attachment_id", "x");
-    formData.append("attachment", state.attachment);
-
-    const url = "https://id-report-id.herokuapp.com/complaint";
-    axios
-      .post(url, formData)
-      .then((data) => {
-        window.location.assign("/report");
-      })
-      .catch((err) => {
-        throw err;
-      });
   };
 
   const handleCopyrightYear = () => {
@@ -75,6 +87,7 @@ const Index = () => {
 
   return (
     <Fragment>
+      <LoadingScreen />
       <div className="home container-fluid vh-100">
         <Nav theme="dark" textColor="light" />
         <div className="row h-75 d-flex align-items-center text-light ps-5">
@@ -92,22 +105,23 @@ const Index = () => {
           </div>
         </div>
       </div>
+      <Waypoint onEnter={handleWaypointEnter} />
       <div className="overview container text-center">
         <div className="row">
           <div className="col-md-4">
             <h2>Total Reports</h2>
             <i className="overview__icon text-danger bi bi-file-check"></i>
-            <h4>40.000</h4>
+            <h4 className="counter">40.000</h4>
           </div>
           <div className="col-md-4">
             <h2>Total Instance</h2>
             <i className="overview__icon text-danger bi bi-building"></i>
-            <h4>100.000</h4>
+            <h4 className="counter">100.000</h4>
           </div>
           <div className="col-md-4">
             <h2>Total Users</h2>
             <i className="overview__icon text-danger bi bi-person"></i>
-            <h4>40.000</h4>
+            <h4 className="counter">40.000</h4>
           </div>
         </div>
       </div>

@@ -1,9 +1,11 @@
 import { Form, InputGroup } from "../components/Form";
 import { REGISTER } from "../redux/actions";
 import { useDispatch } from "react-redux";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import SideImage from "../assets/img/register-side.jpg";
 import axios from "axios";
+import $ from "jquery";
+import LoadingScreen from "../layouts/LoadingScreen";
 export default function Register() {
   const [state, setState] = useState({
     assigned_report: null,
@@ -20,35 +22,63 @@ export default function Register() {
     setState((state) => ({ ...state, [e.target.name]: e.target.value }));
   };
 
+  const handleMessageEntry = (message) => {
+    const messageEntry = ".message-entry";
+    $(messageEntry).removeClass("d-none").text(message);
+    setTimeout(
+      () =>
+        $(messageEntry).fadeTo(2000, 0, () => {
+          $(messageEntry).addClass("d-none");
+        }),
+      2000
+    );
+  };
+
+  useEffect(() => {
+    if (sessionStorage.getItem("auth-token")) {
+      window.location.assign("/");
+    }
+  }, []);
+
   const handleSubmit = (e) => {
+    $("#loading").removeClass("d-none");
     e.preventDefault();
     if (state.password === state.confirmPassword) {
-      const url = "https://id-report-id.herokuapp.com/user";
+      const url = "http://localhost:2021/user";
       dispatch(REGISTER(state));
       axios
         .post(url, state)
         .then(({ data }) => {
-          const token = JSON.stringify(data.token);
-          const id = JSON.stringify(data.data["_id"]);
-          const level = JSON.stringify(data.data["level"]);
-          sessionStorage.setItem("auth-token", token);
-          sessionStorage.setItem("id", id);
-          sessionStorage.setItem("level", level);
-          window.location.assign("/report");
+          if (data === "Email already taken") {
+            handleMessageEntry("Email already taken");
+          } else {
+            const token = JSON.stringify(data.token);
+            const id = JSON.stringify(data.data["_id"]);
+            const level = JSON.stringify(data.data["level"]);
+            sessionStorage.setItem("auth-token", token);
+            sessionStorage.setItem("id", id);
+            sessionStorage.setItem("level", level);
+            window.location.assign("/report");
+          }
         })
         .catch((err) => {
           throw err;
         });
     } else {
-      return;
+      handleMessageEntry("Password and Confirm Password field must be same");
     }
   };
 
   return (
     <div className="d-flex overflow-hidden">
+      <LoadingScreen />
       <div className="col-sm-12 col-md-12 col-lg-6 align-self-center p-5 rounded">
         <Form extClass="shadow p-5" onSubmit={handleSubmit}>
           <h3>Register</h3>
+          <div
+            className="message-entry alert alert-danger d-none"
+            role="alert"
+          ></div>
           <InputGroup
             input={{
               type: "text",

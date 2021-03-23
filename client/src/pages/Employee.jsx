@@ -1,10 +1,11 @@
 import axios from "axios";
 import { useState, useEffect, Fragment } from "react";
+import NoImg from "../assets/img/ImgUnavailable.jpg";
 export default function Employee() {
   const [state, setState] = useState({ report: [] });
 
   useEffect(() => {
-    const reportUrl = "https://id-report-id.herokuapp.com/complaint";
+    const reportUrl = "http://localhost:2021/complaint";
     axios
       .get(reportUrl)
       .then(({ data: report }) => {
@@ -46,15 +47,31 @@ export default function Employee() {
     }
   };
 
-  const handleDownloadDoc = (data) => {
+  const handleImage = (attachment, title) => {
+    switch (attachment) {
+      case "undefined":
+        return <img src={NoImg} alt={title} className="img-fluid" />;
+      case "null":
+        return <img src={NoImg} alt={title} className="img-fluid" />;
+      default:
+        return (
+          <img
+            src={`http://localhost:2021/image/${attachment}`}
+            alt={title}
+            className="img-fluid"
+          />
+        );
+    }
+  };
+
+  const handleDownloadDoc = (data, doc_id) => {
     const confirmVal = window.confirm(
       "By pressing the download document button, you will be assigned to verify this document, are you sure?"
     );
     if (confirmVal) {
       // Update Logic
       const employee_id = JSON.parse(sessionStorage.getItem("id"));
-      const updateReportUrl = `https://id-report-id.herokuapp.com/complaint/${data._id}`;
-      // const updateEmployeeUrl = `https://id-report-id.herokuapp.com/user/${employee_id}`;
+      const updateReportUrl = `http://localhost:2021/complaint/${data._id}`;
       const updateEmployeeUrl = `http://localhost:2021/user/${employee_id}`;
       const status = "In Progress";
       const combineData = { ...data, employee_id, status };
@@ -66,14 +83,15 @@ export default function Employee() {
             .put(updateEmployeeUrl, { assigned_report: data._id })
             .then(() => {
               // Print Logic
-              const printContents = document.getElementById("download")
-                .innerHTML;
+              const printContents = document.getElementById(
+                `download-${doc_id}`
+              ).innerHTML;
               const originalContents = document.body.innerHTML;
               document.body.innerHTML = printContents;
               document.getElementById("deleteDis").className += " d-none";
               window.print();
               document.body.innerHTML = originalContents;
-              // window.location.reload();
+              window.location.assign("/employee/assigned");
             })
             .catch((err) => console.log(err));
         })
@@ -129,17 +147,11 @@ export default function Employee() {
                             aria-label="Close"
                           ></button>
                         </div>
-                        <div className="modal-body" id="download">
+                        <div className="modal-body" id={`download-${data._id}`}>
                           <div className="container-fluid ps-0">
                             <div className="row">
                               <div className="col-md-4">
-                                {data.attachment && (
-                                  <img
-                                    src={`https://id-report-id.herokuapp.com/image/${data.attachment}`}
-                                    alt={data.title}
-                                    className="img-fluid"
-                                  />
-                                )}
+                                {handleImage(data.attachment, data.title)}
                               </div>
                               <div className="col-md-8">
                                 <div className="row">
@@ -158,7 +170,9 @@ export default function Employee() {
                                 </div>
                                 <div className="col-md-12 pt-5">
                                   <button
-                                    onClick={() => handleDownloadDoc(data)}
+                                    onClick={() =>
+                                      handleDownloadDoc(data, data._id)
+                                    }
                                     className="btn btn-block btn-success"
                                     id="deleteDis"
                                   >

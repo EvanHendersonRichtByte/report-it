@@ -1,7 +1,9 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import axios from "axios";
+import $ from "jquery";
 import { Form, InputGroup } from "../components/Form";
 import SideImage from "../assets/img/login-side.jpg";
+import LoadingScreen from "../layouts/LoadingScreen";
 export default function Login() {
   const [state, setState] = useState({
     email: "",
@@ -12,38 +14,45 @@ export default function Login() {
     setState((state) => ({ ...state, [e.target.name]: e.target.value }));
   };
 
+  useEffect(() => {
+    $(".message-entry").hide();
+    if (sessionStorage.getItem("auth-token")) {
+      window.location.assign("/");
+    }
+  }, []);
+
   const handleSubmit = (e) => {
     e.preventDefault();
-    const url = "https://id-report-id.herokuapp.com/user/auth";
+    const url = "http://localhost:2021/user/auth";
     axios
       .post(url, state)
-      .then((response) => {
-        if (typeof response.data === "object") {
-          sessionStorage.setItem(
-            "auth-token",
-            JSON.stringify(response.data.token)
-          );
-          sessionStorage.setItem(
-            "id",
-            JSON.stringify(response.data.data["_id"])
-          );
-          sessionStorage.setItem(
-            "level",
-            JSON.stringify(response.data.data["level"])
-          );
+      .then(({ data }) => {
+        if (typeof data === "object") {
+          $("#loading").removeClass("d-none");
+          sessionStorage.setItem("auth-token", JSON.stringify(data.token));
+          sessionStorage.setItem("id", JSON.stringify(data.data["_id"]));
+          sessionStorage.setItem("level", JSON.stringify(data.data["level"]));
           window.location = "/";
         } else {
-          window.location = "/";
+          $(".message-entry").show(0, "", () => {
+            setTimeout(() => {
+              $(".message-entry").fadeOut(1000);
+            }, 2000);
+          });
         }
       })
       .catch((err) => console.log(err));
   };
-  
+
   return (
     <div className="lsp d-flex vh-100 overflow-hidden">
+      <LoadingScreen />
       <div className="col-sm-12 col-md-12 col-lg-6 align-self-center p-5">
         <Form extClass="shadow p-5 rounded" onSubmit={handleSubmit}>
           <h3>Login</h3>
+          <div className="message-entry alert alert-danger" role="alert">
+            Invalid Credentials
+          </div>
           <InputGroup
             input={{
               type: "email",

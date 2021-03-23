@@ -35,10 +35,10 @@ module.exports = (app, handler) => {
           if (credentialStatus === "Verified") {
             handler(res, { data, token: token(data._id) }, err);
           } else {
-            res.send("We are unable to find your data");
+            res.send("data not found");
           }
         });
-      } else res.send("We are unable to find your data");
+      } else res.send("data not found");
     });
   });
   app.get("/user/:id", (req, res) => {

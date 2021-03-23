@@ -1,5 +1,6 @@
 import { Fragment, useState, useEffect } from "react";
 import axios from "axios";
+import $ from "jquery";
 import { Navbar, NavbarList, NavbarItem } from "../components/Navbar";
 import {
   Form,
@@ -9,6 +10,7 @@ import {
   Select,
   Textarea,
 } from "../components/Form";
+import LoadingScreen from "./LoadingScreen";
 
 const handleLogout = () => {
   sessionStorage.clear();
@@ -112,6 +114,7 @@ export default function Nav({
   }, []);
 
   const onSubmit = (e) => {
+    $("#nav-loading").removeClass("d-none");
     e.preventDefault();
     const formData = new FormData();
     formData.append("author", state.user_id);
@@ -123,10 +126,10 @@ export default function Nav({
     formData.append("attachment_id", "x");
     formData.append("attachment", state.attachment);
 
-    const url = "https://id-report-id.herokuapp.com/complaint";
+    const url = "http://localhost:2021/complaint";
     axios
       .post(url, formData)
-      .then((data) => {
+      .then(() => {
         window.location.assign("/report");
       })
       .catch((err) => {
@@ -141,6 +144,7 @@ export default function Nav({
     >
       <NavbarList>{isSigned(textColor)}</NavbarList>
       <NavbarList extClass="ms-auto">{isLogged(textColor)}</NavbarList>
+      <LoadingScreen customId="nav-loading" />
       <div
         className="modal fade"
         id="exampleModal"

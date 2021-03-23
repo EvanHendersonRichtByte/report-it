@@ -1,11 +1,21 @@
 import axios from "axios";
-import { useState, useEffect } from "react";
+import { Fragment, useState, useEffect } from "react";
 import pageAuth from "../handler/pageAuth";
+import $ from "jquery";
+import NoImg from "../assets/img/ImgUnavailable.jpg";
+import LoadingScreen from "../layouts/LoadingScreen";
 export default function Report() {
   const [state, setState] = useState({
     report: [],
-    userId: JSON.parse(sessionStorage.getItem("id")),
+    kota: [],
     response: "",
+    user_id: JSON.parse(sessionStorage.getItem("id")),
+    title: "",
+    description: "",
+    date: "",
+    city: "Kota Malang",
+    destInstance: "",
+    attachment: null,
   });
 
   useEffect(() => {
@@ -14,8 +24,7 @@ export default function Report() {
   });
 
   const handleGetReportData = () => {
-    // const userComplaintUrl = `https://id-report-id.herokuapp.com/user/${state.userId}/complaint`;
-    const userComplaintUrl = `http://localhost:2021/user/${state.userId}/complaint`;
+    const userComplaintUrl = `http://localhost:2021/user/${state.user_id}/complaint`;
     axios
       .get(userComplaintUrl)
       .then(({ data: report }) => setState((state) => ({ ...state, report })))
@@ -40,18 +49,22 @@ export default function Report() {
   };
 
   const handleReportDeletion = (reportId) => {
-    const url = `https://id-report-id.herokuapp.com/complaint/${reportId}`;
+    $("#loading").removeClass("d-none");
+    const url = `http://localhost:2021/complaint/${reportId}`;
     axios.delete(url);
     window.location.reload();
   };
 
   const handleResponseSubmit = (reportId) => {
-    // const url = `https://id-report-id.herokuapp.com/response/`;
+    $("body").bind("wheel", function () {
+      return false;
+    });
+
     const url = `http://localhost:2021/response/`;
     const responseData = {
       complaint_id: reportId,
       response_text: state.response,
-      user_id: state.userId,
+      user_id: state.user_id,
     };
     axios
       .post(url, responseData)
@@ -59,8 +72,42 @@ export default function Report() {
       .catch((err) => console.log(err));
   };
 
+  const handleOptionShow = (status, id) => {
+    if (status === "Pending") {
+      return (
+        <Fragment>
+          <button
+            type="submit"
+            className="btn text-danger"
+            onClick={() => handleReportDeletion(id)}
+          >
+            <i className="bi bi-trash"></i>
+          </button>
+        </Fragment>
+      );
+    }
+  };
+
+  const handleImage = (attachment, title) => {
+    switch (attachment) {
+      case "undefined":
+        return <img src={NoImg} alt={title} className="img-fluid" />;
+      case "null":
+        return <img src={NoImg} alt={title} className="img-fluid" />;
+      default:
+        return (
+          <img
+            src={`http://localhost:2021/image/${attachment}`}
+            alt={title}
+            className="img-fluid"
+          />
+        );
+    }
+  };
+
   return (
     <div className="container-fluid pt-4 ">
+      <LoadingScreen />
       <div className="row">
         <div className="col-md-2 border-end min-vh-100">
           <h5 className="text-center border-bottom pb-3">Reports</h5>
@@ -83,7 +130,6 @@ export default function Report() {
                 <div className="card mb-3" key={id}>
                   <div className="card-body d-flex justify-content-between align-items-center">
                     <p className="d-inline mb-0">
-                      {" "}
                       {data.title}
                       <span className={`badge ${handleStatus(data)} ms-2`}>
                         {data.status}
@@ -100,16 +146,7 @@ export default function Report() {
                     >
                       Detail
                     </button>
-                    {data.status === "Pending" ||
-                      (data.status === "Rejected" && (
-                        <button
-                          type="submit"
-                          className="btn text-danger"
-                          onClick={() => handleReportDeletion(data._id)}
-                        >
-                          <i className="bi bi-trash"></i>
-                        </button>
-                      ))}
+                    {handleOptionShow(data.status, data._id)}
                     <div
                       className="modal fade"
                       id={`rpt-modal-${data._id}`}
@@ -123,13 +160,7 @@ export default function Report() {
                             <div className="container-fluid">
                               <div className="row">
                                 <div className="complaint col-md-6 bg-light shadow rounded p-0 vh-100">
-                                  {data.attachment !== "null" && (
-                                    <img
-                                      src={`https://id-report-id.herokuapp.com/image/${data.attachment}`}
-                                      alt={data.title}
-                                      className="img-fluid"
-                                    />
-                                  )}
+                                  {handleImage(data.attachment, data.title)}
                                   <div className="container-fluid p-3 d-flex">
                                     <div className="row">
                                       <h4>{data.title}</h4>
