@@ -32,6 +32,10 @@ export default function Login() {
           sessionStorage.setItem("auth-token", JSON.stringify(data.token));
           sessionStorage.setItem("id", JSON.stringify(data.data["_id"]));
           sessionStorage.setItem("level", JSON.stringify(data.data["level"]));
+          sessionStorage.setItem(
+            "assigned_report",
+            JSON.stringify(data.data["assigned_report"])
+          );
           window.location = "/";
         } else {
           $(".message-entry").show(0, "", () => {

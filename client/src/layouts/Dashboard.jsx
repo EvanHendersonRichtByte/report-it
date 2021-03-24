@@ -21,15 +21,17 @@ export default function Dashboard(props) {
                   <i className="bi bi-chevron-right text-danger"></i>
                 </span>
               </a>
-              <a
-                href="/employee/assigned"
-                className="p btn btn-transparent d-flex justify-content-between text-dark "
-              >
-                <p className="d-inline-block">Assigned Report</p>
-                <span className="d-inline-block ">
-                  <i className="bi bi-chevron-right text-danger"></i>
-                </span>
-              </a>
+              {sessionStorage.getItem("assigned_report") !== "null" && (
+                <a
+                  href="/employee/assigned"
+                  className="p btn btn-transparent d-flex justify-content-between text-dark "
+                >
+                  <p className="d-inline-block">Assigned Report</p>
+                  <span className="d-inline-block ">
+                    <i className="bi bi-chevron-right text-danger"></i>
+                  </span>
+                </a>
+              )}
             </div>
           </div>
           <div className="col-md-10 pt-3">{props.children}</div>

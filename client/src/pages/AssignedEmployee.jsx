@@ -2,6 +2,7 @@ import axios from "axios";
 import { useState, useEffect, Fragment } from "react";
 import NoImg from "../assets/img/ImgUnavailable.jpg";
 import $ from "jquery";
+import pageAuth from "../handler/pageAuth";
 export default function AssignedEmployee() {
   const [state, setState] = useState({
     employee_id: JSON.parse(sessionStorage.getItem("id")),
@@ -77,11 +78,16 @@ export default function AssignedEmployee() {
     const confirm = window.confirm("Are you sure?");
     if (confirm === true) {
       const url = `http://localhost:2021/complaint/${complaintId}`;
+      const employeeURL = `http://localhost:2021/employee/${state.employee_id}`;
       alert("Make sure you have the document!!");
       handleDownloadDoc("no");
       axios
         .delete(url)
-        .then((response) => window.location.assign("/employee"))
+        .then((response) => {
+          axios.put(employeeURL, { assigned_report: null }).catch(() => {
+            window.location.assign('/employee')
+          }).then(err => console.log(err));
+        })
         .catch((err) => console.log(err));
     }
   };
@@ -104,6 +110,7 @@ export default function AssignedEmployee() {
   };
 
   useEffect(() => {
+    pageAuth("Employee");
     handleGetData();
   });
   return (
