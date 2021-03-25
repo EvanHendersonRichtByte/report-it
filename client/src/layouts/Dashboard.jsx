@@ -7,8 +7,6 @@ export default function Dashboard(props) {
 
   const handleAssignedNav = () => {
     const assignedReport = sessionStorage.getItem("assigned_report");
-    console.log(assignedReport);
-    console.log(typeof assignedReport);
     if (assignedReport) {
       if (assignedReport !== "null") {
         return (
@@ -40,6 +38,15 @@ export default function Dashboard(props) {
                 className="p btn btn-transparent d-flex justify-content-between text-dark "
               >
                 <p className="d-inline-block">Report List</p>
+                <span className="d-inline-block ">
+                  <i className="bi bi-chevron-right text-danger"></i>
+                </span>
+              </a>
+              <a
+                href="/employee/history"
+                className="p btn btn-transparent d-flex justify-content-between text-dark "
+              >
+                <p className="d-inline-block">Report History</p>
                 <span className="d-inline-block ">
                   <i className="bi bi-chevron-right text-danger"></i>
                 </span>

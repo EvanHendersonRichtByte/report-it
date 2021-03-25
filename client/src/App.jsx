@@ -11,6 +11,7 @@ import Report from "./pages/Report";
 import Dashboard from "./layouts/Dashboard";
 import Employee from "./pages/Employee";
 import AssignedEmployee from "./pages/AssignedEmployee";
+import ReportHistory from "./pages/ReportHistory";
 const isLogged = () => {
   let token = sessionStorage.getItem("auth-token");
   if (token) {
@@ -26,6 +27,11 @@ export default function App() {
         <Route path="/report">
           <Nav />
           <Report />
+        </Route>
+        <Route path="/employee/history">
+          <Dashboard>
+            <ReportHistory />
+          </Dashboard>
         </Route>
         <Route path="/employee/assigned">
           <Dashboard>

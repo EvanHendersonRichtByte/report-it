@@ -9,6 +9,7 @@ module.exports = Complaint = ({ model, Schema }) => {
     destInstance: String,
     attachment_id: String,
     attachment: String,
+    finished: { type: Boolean, default: false },
     response: [{ type: Schema.Types.ObjectId, ref: "Response" }],
     status: { type: String, default: "Pending" },
   });

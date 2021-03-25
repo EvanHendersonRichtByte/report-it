@@ -91,7 +91,7 @@ export default function AssignedEmployee() {
           .put(employeeURL, { assigned_report: null })
           .then((response) => {
             axios
-              .delete(url)
+              .put(url, { finished: true })
               .then(() => {
                 sessionStorage.removeItem("assigned_report");
                 window.location.assign("/employee");
