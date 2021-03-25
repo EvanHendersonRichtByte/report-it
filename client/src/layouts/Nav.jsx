@@ -97,8 +97,22 @@ export default function Nav({
   });
 
   const handleChange = (e) => {
-    if (e.target.files) {
-      setState((state) => ({ ...state, attachment: e.target.files[0] }));
+    if (e.target.name === "attachment") {
+      if ($("#file")[0].files.length > 0) {
+        const type = $("#file")[0].files[0].type;
+        if (type === "image/jpeg" || type === "image/png") {
+          setState((state) => ({ ...state, attachment: e.target.files[0] }));
+        } else {
+          const alertElement = ".alert";
+          $(alertElement).removeClass("d-none");
+          setTimeout(() => {
+            $(alertElement).fadeTo(2000, 0, () => {
+              $(alertElement).addClass("d-none");
+              $(alertElement).fadeTo(0, 1);
+            });
+          }, 2000);
+        }
+      }
     } else {
       setState((state) => ({ ...state, [e.target.name]: e.target.value }));
     }
@@ -126,6 +140,7 @@ export default function Nav({
     formData.append("attachment_id", "x");
     formData.append("attachment", state.attachment);
 
+    console.log(state);
     const url = "http://localhost:2021/complaint";
     axios
       .post(url, formData)
@@ -135,6 +150,11 @@ export default function Nav({
       .catch((err) => {
         throw err;
       });
+  };
+
+  const handleDeleteFileInput = () => {
+    setState((state) => ({ ...state, attachment: null }));
+    $("#file").val("");
   };
   return (
     <Navbar
@@ -173,6 +193,7 @@ export default function Nav({
                     placeholder: "Report Title",
                     value: state.title,
                     handleChange: handleChange,
+                    required: true,
                   }}
                 />
                 <InputGroup>
@@ -181,6 +202,7 @@ export default function Nav({
                     rows={7}
                     value={state.description}
                     handleChange={handleChange}
+                    required
                   />
                 </InputGroup>
                 <InputGroup
@@ -192,6 +214,7 @@ export default function Nav({
                     name: "date",
                     value: state.date,
                     handleChange: handleChange,
+                    required: true,
                   }}
                 />
                 <InputGroup inline inputGroupText="Select City">
@@ -199,6 +222,7 @@ export default function Nav({
                     name="city"
                     value={state.city}
                     handleChange={handleChange}
+                    required
                   >
                     {state.kota.map((e, i) => (
                       <Option key={i} value={e.nama} text={e.nama} />
@@ -211,11 +235,15 @@ export default function Nav({
                     name="destInstance"
                     value={state.destInstance}
                     handleChange={handleChange}
+                    required
                   />
                 </InputGroup>
                 <label className="mb-2" htmlFor="file">
                   Upload Attachment
                 </label>
+                <div className="alert alert-danger d-none" role="alert">
+                  The attachment type must be jpeg/png
+                </div>
                 <div className="col-md-12 d-flex justify-content-between">
                   <input
                     type="file"
@@ -223,6 +251,17 @@ export default function Nav({
                     onChange={handleChange}
                     id="file"
                   />
+                  {state.attachment && (
+                    <button
+                      className="btn btn-transparent"
+                      data-bs-toggle="tooltip"
+                      data-bs-placement="bottom"
+                      title="Delete File"
+                      onClick={handleDeleteFileInput}
+                    >
+                      <i className="bi bi-x-circle text-danger"></i>
+                    </button>
+                  )}
                   <button type="submit" className="btn btn-danger">
                     Report
                   </button>

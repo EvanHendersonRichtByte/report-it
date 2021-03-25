@@ -66,9 +66,9 @@ export default function Employee() {
     }
   };
 
-  const handleDownloadDoc = (data, doc_id) => {
+  const assignReport = (data, doc_id) => {
     const confirmVal = window.confirm(
-      "By pressing the download document button, you will be assigned to verify this document, are you sure?"
+      "By pressing this button, you will be assigned to verify this document, are you sure?"
     );
     if (confirmVal) {
       // Update Logic
@@ -77,7 +77,7 @@ export default function Employee() {
       const updateEmployeeUrl = `http://localhost:2021/user/${employee_id}`;
       const status = "In Progress";
       const combineData = { ...data, employee_id, status };
-      console.log(data._id, combineData);
+
       axios
         .put(updateReportUrl, combineData)
         .then(() => {
@@ -85,14 +85,16 @@ export default function Employee() {
             .put(updateEmployeeUrl, { assigned_report: data._id })
             .then(() => {
               // Print Logic
-              const printContents = document.getElementById(
-                `download-${doc_id}`
-              ).innerHTML;
-              const originalContents = document.body.innerHTML;
-              document.body.innerHTML = printContents;
-              document.getElementById("deleteDis").className += " d-none";
-              window.print();
-              document.body.innerHTML = originalContents;
+              // const printContents = document.getElementById(
+              //   `download-${doc_id}`
+              // ).innerHTML;
+              // const originalContents = document.body.innerHTML;
+              // document.body.innerHTML = printContents;
+              // document.getElementById("deleteDis").className += " d-none";
+              // window.print();
+              // document.body.innerHTML = originalContents;
+
+              sessionStorage.setItem("assigned_report", doc_id);
               window.location.assign("/employee/assigned");
             })
             .catch((err) => console.log(err));
@@ -172,13 +174,11 @@ export default function Employee() {
                                 </div>
                                 <div className="col-md-12 pt-5">
                                   <button
-                                    onClick={() =>
-                                      handleDownloadDoc(data, data._id)
-                                    }
+                                    onClick={() => assignReport(data, data._id)}
                                     className="btn btn-block btn-success"
                                     id="deleteDis"
                                   >
-                                    Download Document
+                                    Verify Document
                                   </button>
                                 </div>
                               </div>

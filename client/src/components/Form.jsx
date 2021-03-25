@@ -51,6 +51,8 @@ const Input = ({
   value,
   handleChange,
   extClass = "",
+  required,
+  disabled,
 }) => (
   <Fragment>
     {label && labelElement(label, id)}
@@ -62,6 +64,8 @@ const Input = ({
       placeholder={placeholder}
       value={value}
       onChange={handleChange}
+      required={required}
+      disabled={disabled}
     />
   </Fragment>
 );

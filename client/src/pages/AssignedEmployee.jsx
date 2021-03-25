@@ -70,7 +70,10 @@ export default function AssignedEmployee() {
     };
     axios
       .post(url, responseData)
-      .then((data) => handleGetData())
+      .then((data) => {
+        handleGetData();
+        setState(() => ({ ...state, response: "" }));
+      })
       .catch((err) => console.log(err));
   };
 
@@ -79,16 +82,26 @@ export default function AssignedEmployee() {
     if (confirm === true) {
       const url = `http://localhost:2021/complaint/${complaintId}`;
       const employeeURL = `http://localhost:2021/employee/${state.employee_id}`;
-      alert("Make sure you have the document!!");
-      handleDownloadDoc("no");
-      axios
-        .delete(url)
-        .then((response) => {
-          axios.put(employeeURL, { assigned_report: null }).catch(() => {
-            window.location.assign('/employee')
-          }).then(err => console.log(err));
-        })
-        .catch((err) => console.log(err));
+      let isDownloaded = window.confirm(
+        "Press no if you want to download document"
+      );
+      // handleDownloadDoc("no");
+      if (isDownloaded === true) {
+        axios
+          .put(employeeURL, { assigned_report: null })
+          .then((response) => {
+            axios
+              .delete(url)
+              .then(() => {
+                sessionStorage.removeItem("assigned_report");
+                window.location.assign("/employee");
+              })
+              .catch((err) => {
+                console.log(err);
+              });
+          })
+          .catch((err) => console.log(err));
+      }
     }
   };
 

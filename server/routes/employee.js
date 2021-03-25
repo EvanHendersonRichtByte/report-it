@@ -15,14 +15,14 @@ module.exports = (app, handler) => {
     });
   });
   app.put("/employee/:id", (req, res) => {
-    console.log(req.body);
-    // Employee.updateOne({ _id: req.params.id }, req.body, () => {
-    //   handler(
-    //     res,
-    //     "Employee data updated!",
-    //     "Failed when updating individual employee data"
-    //   );
-    // });
+    // console.log(req.body);
+    User.updateOne({ _id: req.params.id }, req.body, () => {
+      handler(
+        res,
+        "Employee data updated!",
+        "Failed when updating individual employee data"
+      );
+    });
   });
   app.delete("/employee/:id", (req, res) => {
     Employee.deleteOne({ _id: req.params.id }, () => {

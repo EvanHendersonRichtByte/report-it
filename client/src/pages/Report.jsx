@@ -206,7 +206,8 @@ export default function Report() {
                                       type="text"
                                       name="response"
                                       onChange={handleChange}
-                                      required
+                                      placeholder="You cannot add response "
+                                      disabled
                                     />
                                     <div className="col-md-12 text-end pt-3">
                                       <button
