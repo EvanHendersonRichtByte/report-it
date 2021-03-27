@@ -14,7 +14,10 @@ export default function Dashboard(props) {
             href="/employee/assigned"
             className="p btn btn-transparent d-flex justify-content-between text-dark "
           >
-            <p className="d-inline-block">Assigned Report</p>
+            <p className="d-inline-block">
+              <i className="bi bi-eye me-1"></i>
+              Assigned Report
+            </p>
             <span className="d-inline-block ">
               <i className="bi bi-chevron-right text-danger"></i>
             </span>
@@ -37,7 +40,10 @@ export default function Dashboard(props) {
                 href="/employee"
                 className="p btn btn-transparent d-flex justify-content-between text-dark "
               >
-                <p className="d-inline-block">Report List</p>
+                <p className="d-inline-block">
+                  <i class="bi bi-journal-text me-1"></i>
+                  Report List
+                </p>
                 <span className="d-inline-block ">
                   <i className="bi bi-chevron-right text-danger"></i>
                 </span>
@@ -46,7 +52,10 @@ export default function Dashboard(props) {
                 href="/employee/history"
                 className="p btn btn-transparent d-flex justify-content-between text-dark "
               >
-                <p className="d-inline-block">Report History</p>
+                <p className="d-inline-block">
+                  <i class="bi bi-journal-check me-1"></i>
+                  Report History
+                </p>
                 <span className="d-inline-block ">
                   <i className="bi bi-chevron-right text-danger"></i>
                 </span>
