@@ -55,7 +55,7 @@ export default function Report() {
     window.location.reload();
   };
 
-  const handleResponseSubmit = (reportId) => {
+  const handleResponseSubmit = (reportId) => { // eslint-disable-line 
     $("body").bind("wheel", function () {
       return false;
     });
@@ -70,7 +70,7 @@ export default function Report() {
       .post(url, responseData)
       .then((data) => handleGetReportData())
       .catch((err) => console.log(err));
-  };
+  }; 
 
   const handleOptionShow = (status, id) => {
     if (status === "Pending") {
