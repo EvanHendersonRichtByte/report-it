@@ -97,8 +97,29 @@
 }
 
 .loading-screen {
-  background: rgba(0, 0, 0, 0.8);
+  /* background: rgba(0, 0, 0, 0.8);
   top: 0;
   left: 0;
   z-index: 10000;
+  position: fixed; */
+  position: absolute;
+  z-index: 10000;
+  padding: 0;
+  margin: 0;
+  top: 0;
+  left: 0;
+  height: 100vh;
+  width: 100vw;
+  background: rgba(0, 0, 0, 0.8);
+}
+
+label > p {
+  position: absolute;
+  top: 40%;
+  left: 75%;
+  transform: translate(-50%, -50%);
+  width: 75%;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }

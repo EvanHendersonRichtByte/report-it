@@ -49,7 +49,6 @@ export default function ReportHistory() {
           <th scope="col">Title</th>
           <th scope="col">Description</th>
           <th scope="col">Author</th>
-          <th scope="col">Verified by</th>
           <th scope="col">Destination Instance</th>
           <th scope="col">Attachment</th>
         </tr>
@@ -65,9 +64,8 @@ export default function ReportHistory() {
                 <td className="col-2">{data.title}</td>
                 <td className="col-2">{data.description}</td>
                 <td className="col-1">{data.author.username}</td>
-                <td className="col-2">{data.employeeName}</td>
                 <td className="col-2">{data.destInstance}</td>
-                <td className="col-2">
+                <td className="col-1">
                   {handleImage(data.attachment, data._id)}
                 </td>
               </tr>

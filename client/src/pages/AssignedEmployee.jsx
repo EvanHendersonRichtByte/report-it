@@ -83,7 +83,7 @@ export default function AssignedEmployee() {
       const url = `http://localhost:2021/complaint/${complaintId}`;
       const employeeURL = `http://localhost:2021/employee/${state.employee_id}`;
       let isDownloaded = window.confirm(
-        "Press no if you want to download document"
+        "Press Cancel if you want to download document"
       );
       // handleDownloadDoc("no");
       if (isDownloaded === true) {

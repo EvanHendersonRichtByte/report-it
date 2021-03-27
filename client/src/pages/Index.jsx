@@ -14,15 +14,7 @@ import {
 import { Waypoint } from "react-waypoint";
 import LoadingScreen from "../layouts/LoadingScreen";
 
-const Index = () => {
-  const handleChange = (e) => {
-    if (e.target.files) {
-      setState((state) => ({ ...state, attachment: e.target.files[0] }));
-    } else {
-      setState((state) => ({ ...state, [e.target.name]: e.target.value }));
-    }
-  };
-
+export default function Index() {
   const [state, setState] = useState({
     kota: [],
     user_id: JSON.parse(sessionStorage.getItem("id")),
@@ -33,14 +25,8 @@ const Index = () => {
     city: "Kota Malang",
     destInstance: "",
     attachment: null,
+    fileName: "",
   });
-
-  const handleWaypointEnter = () => {
-    const counterElement = document.querySelectorAll(".counter");
-    counterElement.forEach((item) => {
-      counterUp(item, { duration: 2000 });
-    });
-  };
 
   useEffect(() => {
     axios
@@ -52,33 +38,61 @@ const Index = () => {
   }, []);
 
   const onSubmit = (e) => {
-    $("#loading").removeClass("d-none");
+    $("#nav-loading").removeClass("d-none");
     e.preventDefault();
-    if (!state.user_id) {
-      return window.location.assign("/login");
-    } else if (state.level !== "User") {
-      window.confirm("You must Logged as user to post complaint");
-      window.location.assign("/employee");
-    } else {
-      const formData = new FormData();
-      formData.append("author", state.user_id);
-      formData.append("title", state.title);
-      formData.append("description", state.description);
-      formData.append("date", state.date);
-      formData.append("city", state.city);
-      formData.append("destInstance", state.destInstance);
-      formData.append("attachment_id", "x");
-      formData.append("attachment", state.attachment);
-      const url = "http://localhost:2021/complaint";
-      axios
-        .post(url, formData)
-        .then((data) => {
-          window.location.assign("/report");
-        })
-        .catch((err) => {
-          throw err;
-        });
+    const formData = new FormData();
+    formData.append("author", state.user_id);
+    formData.append("title", state.title);
+    formData.append("description", state.description);
+    formData.append("date", state.date);
+    formData.append("city", state.city);
+    formData.append("destInstance", state.destInstance);
+    formData.append("attachment_id", "x");
+    formData.append("attachment", state.attachment);
+    const url = "http://localhost:2021/complaint";
+    axios
+      .post(url, formData)
+      .then(() => {
+        window.location.assign("/report");
+      })
+      .catch((err) => {
+        throw err;
+      });
+  };
+
+  const handleDeleteFileInput = () =>
+    setState((state) => ({ ...state, attachment: null, fileName: "" }));
+
+  const handleChange = (e) =>
+    setState((state) => ({ ...state, [e.target.name]: e.target.value }));
+
+  const handleFileChange = (e) => {
+    if ($(".indexFile")[0].files.length > 0) {
+      const type = $(".indexFile")[0].files[0].type;
+      if (type === "image/jpeg" || type === "image/png") {
+        setState((state) => ({
+          ...state,
+          attachment: e.target.files[0],
+          fileName: e.target.files[0].name,
+        }));
+      } else {
+        const alertElement = "#indexAlert";
+        $(alertElement).removeClass("d-none");
+        setTimeout(() => {
+          $(alertElement).fadeTo(2000, 0, () => {
+            $(alertElement).addClass("d-none");
+            $(alertElement).fadeTo(0, 1);
+          });
+        }, 2000);
+      }
     }
+  };
+
+  const handleWaypointEnter = () => {
+    const counterElement = document.querySelectorAll(".counter");
+    counterElement.forEach((item) => {
+      counterUp(item, { duration: 2000 });
+    });
   };
 
   const handleCopyrightYear = () => {
@@ -160,6 +174,7 @@ const Index = () => {
                   placeholder: "Report Title",
                   value: state.title,
                   handleChange: handleChange,
+                  required: true,
                 }}
               />
               <InputGroup>
@@ -168,6 +183,7 @@ const Index = () => {
                   rows={7}
                   value={state.description}
                   handleChange={handleChange}
+                  required
                 />
               </InputGroup>
               <InputGroup
@@ -179,6 +195,7 @@ const Index = () => {
                   name: "date",
                   value: state.date,
                   handleChange: handleChange,
+                  required: true,
                 }}
               />
               <InputGroup inline inputGroupText="Select City">
@@ -186,6 +203,7 @@ const Index = () => {
                   name="city"
                   value={state.city}
                   handleChange={handleChange}
+                  required
                 >
                   {state.kota.map((e, i) => (
                     <Option key={i} value={e.nama} text={e.nama} />
@@ -198,18 +216,39 @@ const Index = () => {
                   name="destInstance"
                   value={state.destInstance}
                   handleChange={handleChange}
+                  required
                 />
               </InputGroup>
-              <label className="mb-2" htmlFor="file">
-                Upload Attachment
-              </label>
+              <div
+                id="indexAlert"
+                className="alert alert-danger d-none"
+                role="alert"
+              >
+                The attachment type must be jpeg/png
+              </div>
+
               <div className="col-md-12 d-flex justify-content-between">
-                <input
-                  type="file"
-                  name="attachment"
-                  onChange={handleChange}
-                  id="file"
-                />
+                <label htmlFor="file" className="position-relative">
+                  <input
+                    type="file"
+                    name="attachment"
+                    onChange={handleFileChange}
+                    id="file"
+                    className="indexFile text-light bg-light"
+                  />
+                  <p>{!state.fileName ? "No File chosen" : state.fileName}</p>
+                </label>
+                {state.attachment && (
+                  <button
+                    className="ms-4 btn btn-transparent"
+                    data-bs-toggle="tooltip"
+                    data-bs-placement="bottom"
+                    title="Delete File"
+                    onClick={handleDeleteFileInput}
+                  >
+                    <i className="bi bi-x-circle text-danger"></i>
+                  </button>
+                )}
                 <button type="submit" className="btn btn-danger">
                   Report
                 </button>
@@ -223,6 +262,4 @@ const Index = () => {
       </div>
     </Fragment>
   );
-};
-
-export default Index;
+}

@@ -12,11 +12,6 @@ import {
 } from "../components/Form";
 import LoadingScreen from "./LoadingScreen";
 
-const handleLogout = () => {
-  sessionStorage.clear();
-  window.location.reload();
-};
-
 const isSigned = (textColor) => {
   let level = sessionStorage.getItem("level");
   level = JSON.parse(level);
@@ -76,6 +71,11 @@ const isLogged = (textColor) => {
   }
 };
 
+const handleLogout = () => {
+  sessionStorage.clear();
+  window.location.reload();
+};
+
 const navLink = (title, redirect, extClass) => {
   return { title, redirect, extClass };
 };
@@ -94,29 +94,8 @@ export default function Nav({
     city: "Kota Malang",
     destInstance: "",
     attachment: null,
+    fileName: "",
   });
-
-  const handleChange = (e) => {
-    if (e.target.name === "attachment") {
-      if ($("#file")[0].files.length > 0) {
-        const type = $("#file")[0].files[0].type;
-        if (type === "image/jpeg" || type === "image/png") {
-          setState((state) => ({ ...state, attachment: e.target.files[0] }));
-        } else {
-          const alertElement = ".alert";
-          $(alertElement).removeClass("d-none");
-          setTimeout(() => {
-            $(alertElement).fadeTo(2000, 0, () => {
-              $(alertElement).addClass("d-none");
-              $(alertElement).fadeTo(0, 1);
-            });
-          }, 2000);
-        }
-      }
-    } else {
-      setState((state) => ({ ...state, [e.target.name]: e.target.value }));
-    }
-  };
 
   useEffect(() => {
     axios
@@ -139,8 +118,6 @@ export default function Nav({
     formData.append("destInstance", state.destInstance);
     formData.append("attachment_id", "x");
     formData.append("attachment", state.attachment);
-
-    console.log(state);
     const url = "http://localhost:2021/complaint";
     axios
       .post(url, formData)
@@ -153,9 +130,35 @@ export default function Nav({
   };
 
   const handleDeleteFileInput = () => {
-    setState((state) => ({ ...state, attachment: null }));
-    $("#file").val("");
+    setState((state) => ({ ...state, attachment: null, fileName: "" }));
   };
+
+  const handleChange = (e) => {
+    if (e.target.name === "attachment") {
+      if ($("#file")[0].files.length > 0) {
+        const type = $("#file")[0].files[0].type;
+        if (type === "image/jpeg" || type === "image/png") {
+          setState((state) => ({
+            ...state,
+            attachment: e.target.files[0],
+            fileName: e.target.files[0].name,
+          }));
+        } else {
+          const alertElement = ".alert";
+          $(alertElement).removeClass("d-none");
+          setTimeout(() => {
+            $(alertElement).fadeTo(2000, 0, () => {
+              $(alertElement).addClass("d-none");
+              $(alertElement).fadeTo(0, 1);
+            });
+          }, 2000);
+        }
+      }
+    } else {
+      setState((state) => ({ ...state, [e.target.name]: e.target.value }));
+    }
+  };
+
   return (
     <Navbar
       brand="Report it"
@@ -245,26 +248,30 @@ export default function Nav({
                   The attachment type must be jpeg/png
                 </div>
                 <div className="col-md-12 d-flex justify-content-between">
+                  <label htmlFor="file" className="position-relative">
                   <input
                     type="file"
                     name="attachment"
                     onChange={handleChange}
                     id="file"
+                    className="text-light bg-light"
                   />
-                  {state.attachment && (
-                    <button
-                      className="btn btn-transparent"
-                      data-bs-toggle="tooltip"
-                      data-bs-placement="bottom"
-                      title="Delete File"
-                      onClick={handleDeleteFileInput}
-                    >
-                      <i className="bi bi-x-circle text-danger"></i>
-                    </button>
-                  )}
-                  <button type="submit" className="btn btn-danger">
-                    Report
+                  <p>{!state.fileName ? "No File chosen" : state.fileName}</p>
+                </label>
+                {state.attachment && (
+                  <button
+                    className="ms-4 btn btn-transparent"
+                    data-bs-toggle="tooltip"
+                    data-bs-placement="bottom"
+                    title="Delete File"
+                    onClick={handleDeleteFileInput}
+                  >
+                    <i className="bi bi-x-circle text-danger"></i>
                   </button>
+                )}
+                <button type="submit" className="btn btn-danger">
+                  Report
+                </button>
                 </div>
               </Form>
             </div>

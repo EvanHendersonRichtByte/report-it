@@ -210,7 +210,7 @@ export default function Report() {
                                       disabled
                                     />
                                     <div className="col-md-12 text-end pt-3">
-                                      <button
+                                      {/* <button
                                         onClick={() =>
                                           handleResponseSubmit(data._id)
                                         }
@@ -218,7 +218,7 @@ export default function Report() {
                                         type="submit"
                                       >
                                         Submit
-                                      </button>
+                                      </button> */}
                                     </div>
                                   </div>
                                 </div>
