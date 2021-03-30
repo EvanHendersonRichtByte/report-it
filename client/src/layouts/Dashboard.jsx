@@ -41,7 +41,7 @@ export default function Dashboard(props) {
                 className="p btn btn-transparent d-flex justify-content-between text-dark "
               >
                 <p className="d-inline-block">
-                  <i class="bi bi-journal-text me-1"></i>
+                  <i className="bi bi-journal-text me-1"></i>
                   Report List
                 </p>
                 <span className="d-inline-block ">
@@ -53,7 +53,7 @@ export default function Dashboard(props) {
                 className="p btn btn-transparent d-flex justify-content-between text-dark "
               >
                 <p className="d-inline-block">
-                  <i class="bi bi-journal-check me-1"></i>
+                  <i className="bi bi-journal-check me-1"></i>
                   Report History
                 </p>
                 <span className="d-inline-block ">

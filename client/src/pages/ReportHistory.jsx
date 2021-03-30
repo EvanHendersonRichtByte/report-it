@@ -1,9 +1,11 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
 import NoImg from "../assets/img/ImgUnavailable.jpg";
+import pageAuth from "../handler/pageAuth";
 export default function ReportHistory() {
   const [state, setState] = useState([]);
   useEffect(() => {
+    pageAuth("Employee");
     const url = "http://localhost:2021/complaint/";
     const employeeUrl = "http://localhost:2021/user/";
     axios

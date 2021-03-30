@@ -62,19 +62,21 @@ export default function AssignedEmployee() {
   };
 
   const handleResponseSubmit = (reportId) => {
-    const url = `http://localhost:2021/response/`;
-    const responseData = {
-      complaint_id: reportId,
-      response_text: state.response,
-      user_id: state.employee_id,
-    };
-    axios
-      .post(url, responseData)
-      .then((data) => {
-        handleGetData();
-        setState(() => ({ ...state, response: "" }));
-      })
-      .catch((err) => console.log(err));
+    if (state.response.trim().length > 0) {
+      const url = `http://localhost:2021/response/`;
+      const responseData = {
+        complaint_id: reportId,
+        response_text: state.response,
+        user_id: state.employee_id,
+      };
+      axios
+        .post(url, responseData)
+        .then((data) => {
+          handleGetData();
+          setState(() => ({ ...state, response: "" }));
+        })
+        .catch((err) => console.log(err));
+    }
   };
 
   const handleFinishReview = (complaintId) => {

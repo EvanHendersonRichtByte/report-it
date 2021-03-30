@@ -11,10 +11,10 @@
 .home {
   background: linear-gradient(
       to bottom right,
-      rgba(0, 0, 0, 0.7),
-      rgba(0, 0, 0, 0.7)
+      rgba(0, 0, 0, 0.6),
+      rgba(0, 0, 0, 0.6)
     ),
-    url("../assets/img/index.jpg");
+    url("../assets/img/index2.jpg");
   background-size: cover;
   background-position: center;
   height: 20rem;
@@ -50,7 +50,7 @@
 }
 
 .footer {
-  margin-top: 12rem;
+  margin-top: 8rem;
   bottom: 0;
   left: 0;
   padding: 2rem;
@@ -119,6 +119,12 @@ label > p {
   left: 75%;
   transform: translate(-50%, -50%);
   width: 75%;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.truncate {
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;

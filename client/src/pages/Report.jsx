@@ -55,7 +55,7 @@ export default function Report() {
     window.location.reload();
   };
 
-  const handleResponseSubmit = (reportId) => { // eslint-disable-line 
+  const handleResponseSubmit = (reportId) => { // eslint-disable-line
     $("body").bind("wheel", function () {
       return false;
     });
@@ -70,7 +70,7 @@ export default function Report() {
       .post(url, responseData)
       .then((data) => handleGetReportData())
       .catch((err) => console.log(err));
-  }; 
+  };
 
   const handleOptionShow = (status, id) => {
     if (status === "Pending") {
@@ -114,7 +114,7 @@ export default function Report() {
           <div className="row">
             <button className="btn btn-transparent d-flex justify-content-between">
               <p className="d-inline-block">
-                <i class="bi bi-file-earmark-text me-1"></i>
+                <i className="bi bi-file-earmark-text me-1"></i>
                 Your Reports
               </p>
               <i className="bi bi-chevron-right text-danger"></i>

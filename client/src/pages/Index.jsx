@@ -26,38 +26,73 @@ export default function Index() {
     destInstance: "",
     attachment: null,
     fileName: "",
+    totalReports: 0,
+    totalInstance: 0,
+    totalUsers: 0,
   });
 
   useEffect(() => {
+    getInstance();
+    getUsers();
+    getReports();
+  }, []);
+
+  const getInstance = () => {
     axios
       .get("https://dev.farizdotid.com/api/daerahindonesia/kota?id_provinsi=35")
       .then((response) =>
-        setState((state) => ({ ...state, kota: response.data.kota_kabupaten }))
+        setState((state) => ({
+          ...state,
+          kota: response.data.kota_kabupaten,
+          totalInstance: response.data.kota_kabupaten.length,
+        }))
       )
       .catch((err) => console.log(err));
-  }, []);
+  };
+
+  const getUsers = () => {
+    axios
+      .get("/user")
+      .then(({ data }) =>
+        setState((state) => ({ ...state, totalUsers: data.length }))
+      )
+      .catch((err) => console.log(err));
+  };
+
+  const getReports = () => {
+    axios
+      .get("/complaint")
+      .then(({ data }) =>
+        setState((state) => ({ ...state, totalReports: data.length }))
+      )
+      .catch((err) => console.log(err));
+  };
 
   const onSubmit = (e) => {
-    $("#nav-loading").removeClass("d-none");
-    e.preventDefault();
-    const formData = new FormData();
-    formData.append("author", state.user_id);
-    formData.append("title", state.title);
-    formData.append("description", state.description);
-    formData.append("date", state.date);
-    formData.append("city", state.city);
-    formData.append("destInstance", state.destInstance);
-    formData.append("attachment_id", "x");
-    formData.append("attachment", state.attachment);
-    const url = "http://localhost:2021/complaint";
-    axios
-      .post(url, formData)
-      .then(() => {
-        window.location.assign("/report");
-      })
-      .catch((err) => {
-        throw err;
-      });
+    if (!state.user_id) {
+      window.location.assign("/login");
+    } else {
+      $("#nav-loading").removeClass("d-none");
+      e.preventDefault();
+      const formData = new FormData();
+      formData.append("author", state.user_id);
+      formData.append("title", state.title);
+      formData.append("description", state.description);
+      formData.append("date", state.date);
+      formData.append("city", state.city);
+      formData.append("destInstance", state.destInstance);
+      formData.append("attachment_id", "x");
+      formData.append("attachment", state.attachment);
+      const url = "http://localhost:2021/complaint";
+      axios
+        .post(url, formData)
+        .then(() => {
+          window.location.assign("/report");
+        })
+        .catch((err) => {
+          throw err;
+        });
+    }
   };
 
   const handleDeleteFileInput = () =>
@@ -125,17 +160,17 @@ export default function Index() {
           <div className="col-md-4">
             <h2>Total Reports</h2>
             <i className="overview__icon text-danger bi bi-file-check"></i>
-            <h4 className="counter">40.000</h4>
+            <h4 className="counter">{state.totalReports}</h4>
           </div>
           <div className="col-md-4">
             <h2>Total Instance</h2>
             <i className="overview__icon text-danger bi bi-building"></i>
-            <h4 className="counter">100.000</h4>
+            <h4 className="counter">{state.totalInstance}</h4>
           </div>
           <div className="col-md-4">
             <h2>Total Users</h2>
             <i className="overview__icon text-danger bi bi-person"></i>
-            <h4 className="counter">40.000</h4>
+            <h4 className="counter">{state.totalUsers}</h4>
           </div>
         </div>
       </div>
@@ -254,6 +289,23 @@ export default function Index() {
                 </button>
               </div>
             </Form>
+          </div>
+        </div>
+      </div>
+      <div className="container-fluid mt-5 pt-5">
+        <div className="row mt-5 pt-5 px-3 justify-content-center align-items-center">
+          <div className="col-md-3">
+            <h1 className="fw-normal">Our Location</h1>
+          </div>
+          <div className="col-md-8 ms-auto overflow-hidden">
+            <iframe
+              title="location"
+              src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d101590.51774583993!2d-115.87259608643154!3d37.27845322991936!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x80b81baaba3e8c81%3A0x970427e38e6237ae!2sArea%2051%2C%20Nevada%2C%20Amerika%20Serikat!5e0!3m2!1sid!2sid!4v1617112522112!5m2!1sid!2sid"
+              width="100%"
+              height="450"
+              allowFullScreen={true}
+              loading="lazy"
+            ></iframe>
           </div>
         </div>
       </div>
