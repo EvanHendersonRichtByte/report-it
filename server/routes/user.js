@@ -4,7 +4,7 @@ const token = (payload) => {
   return jwt.sign({ payload }, "okegan");
 };
 
-module.exports = (app, handler) => {
+module.exports = (app, handler, auth) => {
   app.post("/user", (req, res) => {
     bcrypt.genSalt(10, (err, salt) => {
       bcrypt.hash(req.body.password, salt, (err, hash) => {
@@ -19,7 +19,7 @@ module.exports = (app, handler) => {
       });
     });
   });
-  app.get("/user", (req, res) => {
+  app.get("/user", auth, (req, res) => {
     User.find({}, (err, data) => {
       handler(res, data, "Failed when getting users data");
     });

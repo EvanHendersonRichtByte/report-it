@@ -1,4 +1,4 @@
-module.exports = (app, handler) => {
+module.exports = (app, handler, auth) => {
   app.post("/employee", (req, res) => {
     Employee.create(req.body, () =>
       handler(res, "Employee Added!", "Failed when adding employee")

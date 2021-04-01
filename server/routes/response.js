@@ -1,4 +1,4 @@
-module.exports = (app, handler) => {
+module.exports = (app, handler, auth) => {
   app.post("/response", (req, res) => {
     Response.create(req.body, (err, response) => {
       Complaint.findOne({ _id: response.complaint_id }, (err, responseData) => {

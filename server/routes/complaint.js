@@ -32,7 +32,7 @@ const storage = new GridFsStorage({
 
 const upload = multer({ storage });
 
-module.exports = (app, handler) => {
+module.exports = (app, handler, auth) => {
   app.post("/complaint", upload.single("attachment"), (req, res) => {
     if (req.file) {
       req.body.attachment_id = String(req.file.id);
