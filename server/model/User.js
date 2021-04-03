@@ -1,3 +1,4 @@
+const { conn } = require("../config/db");
 module.exports = User = ({ model, Schema }) => {
   const UserSchema = new Schema({
     assigned_report: { type: Schema.Types.ObjectId, ref: "Complaint" },
@@ -8,5 +9,5 @@ module.exports = User = ({ model, Schema }) => {
     telephone: String,
     level: { type: String, default: "User" },
   });
-  return (User = model("User", UserSchema));
+  return (User = conn.model("User", UserSchema));
 };

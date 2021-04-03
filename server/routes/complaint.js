@@ -1,17 +1,10 @@
-// const { upload, gfs } = require("../middleware/upload");
-
 const mongoose = require("mongoose");
 const GridFsStorage = require("multer-gridfs-storage");
 const multer = require("multer");
 const { mongodbURI } = require("../config/config.json");
-const { response } = require("express");
-
+const { conn } = require("../config/db");
 // REFACTOR ???
 let gfs;
-const conn = mongoose.createConnection(mongodbURI, {
-  useNewUrlParser: true,
-  useUnifiedTopology: true,
-});
 
 conn.once("open", () => {
   gfs = new mongoose.mongo.GridFSBucket(conn.db, {

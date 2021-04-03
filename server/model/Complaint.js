@@ -1,3 +1,4 @@
+const { conn } = require("../config/db");
 module.exports = Complaint = ({ model, Schema }) => {
   const ComplaintSchema = new Schema({
     author: { type: Schema.Types.ObjectId, ref: "User" },
@@ -13,5 +14,5 @@ module.exports = Complaint = ({ model, Schema }) => {
     response: [{ type: Schema.Types.ObjectId, ref: "Response" }],
     status: { type: String, default: "Pending" },
   });
-  return (Complaint = model("Complaint", ComplaintSchema));
+  return (Complaint = conn.model("Complaint", ComplaintSchema));
 };

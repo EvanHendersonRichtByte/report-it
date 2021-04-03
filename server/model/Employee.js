@@ -1,3 +1,4 @@
+const { conn } = require("../config/db");
 module.exports = Employee = ({ model, Schema }) => {
   const EmployeeSchema = new Schema({
     name: String,
@@ -6,5 +7,5 @@ module.exports = Employee = ({ model, Schema }) => {
     level: { type: String, default: "Employee" },
     telephone: String,
   });
-  return (Employee = model("Employee", EmployeeSchema));
+  return (Employee = conn.model("Employee", EmployeeSchema));
 };

@@ -50,17 +50,21 @@ export default function Index() {
       .catch((err) => console.log(err));
   };
 
-  const getUsers = () => {
-    axios
-      .get("/user")
+  const getUsers = async () => {
+    const storedToken = JSON.parse(sessionStorage.getItem("auth-token"));
+    const defaultToken =
+      "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJwYXlsb2FkIjoiNjA2NTI3YjZiNWVjZWUwZjljNWI5NjBlIiwiaWF0IjoxNjE3Mjk5Njc4fQ.gAbGlHHR9g92xLW5V_Q2vW3QT_K6xqXSGzd2fxQydIU";
+    const token = storedToken || defaultToken;
+    await axios
+      .get("/user", { headers: { token } })
       .then(({ data }) =>
         setState((state) => ({ ...state, totalUsers: data.length }))
       )
       .catch((err) => console.log(err));
   };
 
-  const getReports = () => {
-    axios
+  const getReports = async () => {
+    await axios
       .get("/complaint")
       .then(({ data }) =>
         setState((state) => ({ ...state, totalReports: data.length }))
@@ -69,11 +73,12 @@ export default function Index() {
   };
 
   const onSubmit = (e) => {
+    e.preventDefault();
     if (!state.user_id) {
       window.location.assign("/login");
     } else {
+      window.location.href = "#home";
       $("#nav-loading").removeClass("d-none");
-      e.preventDefault();
       const formData = new FormData();
       formData.append("author", state.user_id);
       formData.append("title", state.title);
@@ -137,7 +142,7 @@ export default function Index() {
   return (
     <Fragment>
       <LoadingScreen />
-      <div className="home container-fluid vh-100">
+      <div id="home" className="home container-fluid vh-100">
         <Nav theme="dark" textColor="light" />
         <div className="row h-75 d-flex align-items-center text-light ps-5">
           <div className="col-md-7">

@@ -8,7 +8,7 @@ app
   .use(express.static("public"));
 
 app.listen((devPort = process.env.PORT || devPort), () => {
-  console.log(`Server running on port ${devPort}`);
+  console.log('\x1b[34m%s\x1b[0m', `Server running on port ${devPort}`);  
 });
 
 module.exports = { app };

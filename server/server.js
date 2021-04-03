@@ -3,6 +3,7 @@ const { mongoose } = require("./config/db");
 const { app } = require("./config/config");
 const fs = require("fs");
 const auth = require("./middleware/auth");
+
 // Dynamic Model Import
 getAllModel = () => {
   const model = fs.readdirSync("./model");
