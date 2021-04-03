@@ -6,8 +6,8 @@ export default function ReportHistory() {
   const [state, setState] = useState([]);
   useEffect(() => {
     pageAuth("Employee");
-    const url = "http://localhost:2021/complaint/";
-    const employeeUrl = "http://localhost:2021/user/";
+    const url = "/complaint/";
+    const employeeUrl = "/user/";
     axios
       .get(url)
       .then(({ data }) => {
@@ -34,11 +34,7 @@ export default function ReportHistory() {
         return <img src={NoImg} alt={title} className="img-fluid" />;
       default:
         return (
-          <img
-            src={`http://localhost:2021/image/${attachment}`}
-            alt={title}
-            className="img-fluid"
-          />
+          <img src={`/image/${attachment}`} alt={title} className="img-fluid" />
         );
     }
   };

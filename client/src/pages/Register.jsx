@@ -44,7 +44,7 @@ export default function Register() {
     $("#loading").removeClass("d-none");
     e.preventDefault();
     if (state.password === state.confirmPassword) {
-      const url = "http://localhost:2021/user";
+      const url = "/user";
       dispatch(REGISTER(state));
       axios
         .post(url, state)

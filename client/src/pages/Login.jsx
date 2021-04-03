@@ -23,7 +23,7 @@ export default function Login() {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    const url = "http://localhost:2021/user/auth";
+    const url = "/user/auth";
     axios
       .post(url, state)
       .then(({ data }) => {

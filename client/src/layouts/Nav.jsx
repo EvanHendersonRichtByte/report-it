@@ -118,7 +118,7 @@ export default function Nav({
     formData.append("destInstance", state.destInstance);
     formData.append("attachment_id", "x");
     formData.append("attachment", state.attachment);
-    const url = "http://localhost:2021/complaint";
+    const url = "/complaint";
     axios
       .post(url, formData)
       .then(() => {
@@ -249,29 +249,29 @@ export default function Nav({
                 </div>
                 <div className="col-md-12 d-flex justify-content-between">
                   <label htmlFor="file" className="position-relative">
-                  <input
-                    type="file"
-                    name="attachment"
-                    onChange={handleChange}
-                    id="file"
-                    className="text-light bg-light"
-                  />
-                  <p>{!state.fileName ? "No File chosen" : state.fileName}</p>
-                </label>
-                {state.attachment && (
-                  <button
-                    className="ms-4 btn btn-transparent"
-                    data-bs-toggle="tooltip"
-                    data-bs-placement="bottom"
-                    title="Delete File"
-                    onClick={handleDeleteFileInput}
-                  >
-                    <i className="bi bi-x-circle text-danger"></i>
+                    <input
+                      type="file"
+                      name="attachment"
+                      onChange={handleChange}
+                      id="file"
+                      className="text-light bg-light"
+                    />
+                    <p>{!state.fileName ? "No File chosen" : state.fileName}</p>
+                  </label>
+                  {state.attachment && (
+                    <button
+                      className="ms-4 btn btn-transparent"
+                      data-bs-toggle="tooltip"
+                      data-bs-placement="bottom"
+                      title="Delete File"
+                      onClick={handleDeleteFileInput}
+                    >
+                      <i className="bi bi-x-circle text-danger"></i>
+                    </button>
+                  )}
+                  <button type="submit" className="btn btn-danger">
+                    Report
                   </button>
-                )}
-                <button type="submit" className="btn btn-danger">
-                  Report
-                </button>
                 </div>
               </Form>
             </div>

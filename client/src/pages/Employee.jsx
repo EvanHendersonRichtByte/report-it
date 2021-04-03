@@ -14,7 +14,7 @@ export default function Employee() {
       alert("You have work to do");
       window.location.assign("/employee/assigned");
     }
-    const reportUrl = "http://localhost:2021/complaint";
+    const reportUrl = "/complaint";
     axios
       .get(reportUrl)
       .then(({ data: report }) => {
@@ -65,7 +65,7 @@ export default function Employee() {
       default:
         return (
           <img
-            src={`http://localhost:2021/image/${attachment}`}
+            src={`/image/${attachment}`}
             alt={title}
             className="img-fluid"
           />
@@ -80,8 +80,8 @@ export default function Employee() {
     if (confirmVal) {
       // Update Logic
       const employee_id = JSON.parse(sessionStorage.getItem("id"));
-      const updateReportUrl = `http://localhost:2021/complaint/${data._id}`;
-      const updateEmployeeUrl = `http://localhost:2021/user/${employee_id}`;
+      const updateReportUrl = `/complaint/${data._id}`;
+      const updateEmployeeUrl = `/user/${employee_id}`;
       const status = "In Progress";
       const combineData = { ...data, employee_id, status };
 

@@ -53,7 +53,7 @@ export default function Report() {
 
   const handleReportDeletion = (reportId) => {
     $("#loading").removeClass("d-none");
-    const url = `complaint/${reportId}`;
+    const url = `/complaint/${reportId}`;
     axios.delete(url);
     window.location.reload();
   };
@@ -64,7 +64,7 @@ export default function Report() {
       return false;
     });
 
-    const url = "response/";
+    const url = "/response/";
     const responseData = {
       complaint_id: reportId,
       response_text: state.response,

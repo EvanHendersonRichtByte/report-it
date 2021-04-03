@@ -88,7 +88,7 @@ export default function Index() {
       formData.append("destInstance", state.destInstance);
       formData.append("attachment_id", "x");
       formData.append("attachment", state.attachment);
-      const url = "http://localhost:2021/complaint";
+      const url = "/complaint";
       axios
         .post(url, formData)
         .then(() => {

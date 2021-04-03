@@ -25,7 +25,7 @@ export default function AssignedEmployee() {
   };
 
   const handleStatusDeciding = (status) => {
-    const url = `http://localhost:2021/complaint/${state.assignedReport.assigned_report._id}`;
+    const url = `/complaint/${state.assignedReport.assigned_report._id}`;
     axios
       .put(url, { status })
       .then(() => {
@@ -35,7 +35,7 @@ export default function AssignedEmployee() {
   };
 
   const handleGetData = () => {
-    const employeeDataUrl = `http://localhost:2021/user/${state.employee_id}`;
+    const employeeDataUrl = `/user/${state.employee_id}`;
     axios
       .get(employeeDataUrl)
       .then(({ data: assignedReport }) =>
@@ -63,7 +63,7 @@ export default function AssignedEmployee() {
 
   const handleResponseSubmit = (reportId) => {
     if (state.response.trim().length > 0) {
-      const url = `http://localhost:2021/response/`;
+      const url = `/response/`;
       const responseData = {
         complaint_id: reportId,
         response_text: state.response,
@@ -82,8 +82,8 @@ export default function AssignedEmployee() {
   const handleFinishReview = (complaintId) => {
     const confirm = window.confirm("Are you sure?");
     if (confirm === true) {
-      const url = `http://localhost:2021/complaint/${complaintId}`;
-      const employeeURL = `http://localhost:2021/employee/${state.employee_id}`;
+      const url = `/complaint/${complaintId}`;
+      const employeeURL = `/employee/${state.employee_id}`;
       let isDownloaded = window.confirm(
         "Press Cancel if you want to download document"
       );
@@ -115,11 +115,7 @@ export default function AssignedEmployee() {
         return <img src={NoImg} alt={title} className="img-fluid" />;
       default:
         return (
-          <img
-            src={`http://localhost:2021/image/${attachment}`}
-            alt={title}
-            className="img-fluid"
-          />
+          <img src={`/image/${attachment}`} alt={title} className="img-fluid" />
         );
     }
   };
