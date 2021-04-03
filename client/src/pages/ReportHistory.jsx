@@ -9,12 +9,13 @@ export default function ReportHistory() {
   });
   useEffect(() => {
     pageAuth("User");
-    const userComplaintUrl = `http://localhost:2021/user/${state.userId}/complaint`;
+    const userComplaintUrl = `/user/${state.userId}/complaint`;
     axios
       .get(userComplaintUrl)
-      .then(({ data: complaints }) =>
-        setState((state) => ({ ...state, complaints }))
-      )
+      .then(({ data: complaints }) => {
+        complaints = complaints.filter((data) => data.finished);
+        setState((state) => ({ ...state, complaints }));
+      })
       .catch((err) => console.log(err));
   }, [state.userId]);
 
@@ -26,11 +27,7 @@ export default function ReportHistory() {
         return <img src={NoImg} alt={title} className="img-fluid" />;
       default:
         return (
-          <img
-            src={`http://localhost:2021/image/${attachment}`}
-            alt={title}
-            className="img-fluid"
-          />
+          <img src={`/image/${attachment}`} alt={title} className="img-fluid" />
         );
     }
   };
@@ -42,7 +39,7 @@ export default function ReportHistory() {
           <th scope="col">#</th>
           <th scope="col">Title</th>
           <th scope="col">Description</th>
-          <th scope="col">Author</th>
+          <th scope="col">Status</th>
           <th scope="col">Destination Instance</th>
           <th scope="col">Attachment</th>
         </tr>
@@ -57,7 +54,7 @@ export default function ReportHistory() {
                 </th>
                 <td className="col-2">{data.title}</td>
                 <td className="col-2">{data.description}</td>
-                <td className="col-1">{data.author.username}</td>
+                <td className="col-1">{data.status}</td>
                 <td className="col-2">{data.destInstance}</td>
                 <td className="col-1">
                   {handleImage(data.attachment, data._id)}

@@ -64,18 +64,32 @@ export default function Dashboard(props) {
         );
       default:
         return (
-          <a
-            href="/report"
-            className="p btn btn-transparent d-flex justify-content-between text-dark "
-          >
-            <p className="d-inline-block">
-              <i className="bi bi-journal-text me-1"></i>
-              Your Report
-            </p>
-            <span className="d-inline-block ">
-              <i className="bi bi-chevron-right text-danger"></i>
-            </span>
-          </a>
+          <Fragment>
+            <a
+              href="/report"
+              className="p btn btn-transparent d-flex justify-content-between text-dark "
+            >
+              <p className="d-inline-block">
+                <i className="bi bi-journal-text me-1"></i>
+                Your Report
+              </p>
+              <span className="d-inline-block ">
+                <i className="bi bi-chevron-right text-danger"></i>
+              </span>
+            </a>
+            <a
+              href="/report/history"
+              className="p btn btn-transparent d-flex justify-content-between text-dark "
+            >
+              <p className="d-inline-block">
+                <i className="bi bi-journal-check me-1"></i>
+                Report History
+              </p>
+              <span className="d-inline-block ">
+                <i className="bi bi-chevron-right text-danger"></i>
+              </span>
+            </a>
+          </Fragment>
         );
     }
   };

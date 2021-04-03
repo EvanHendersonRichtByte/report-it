@@ -24,17 +24,17 @@ export default function App() {
     <BrowserRouter>
       <Switch>
         {isLogged()}
-        <Dashboard>
-          <Route path="/report/history" component={ReportHistory} />
-          <Route path="/report" component={Report} />
-          <Route path="/employee/history" component={EmployeeReportHistory} />
-          <Route path="/employee/assigned" component={AssignedEmployee} />
-          <Route path="/employee" component={Employee} />
-        </Dashboard>
-
+        <Route exact path="/" component={Index} />
         <Route path="/register" component={Register} />
         <Route path="/login" component={Login} />
-        <Route path="/" component={Index} />
+
+        <Dashboard>
+          <Route path="/report/history" component={ReportHistory} />
+          <Route exact path="/report" component={Report} />
+          <Route path="/employee/history" component={EmployeeReportHistory} />
+          <Route path="/employee/assigned" component={AssignedEmployee} />
+          <Route exact path="/employee" component={Employee} />
+        </Dashboard>
       </Switch>
     </BrowserRouter>
   );

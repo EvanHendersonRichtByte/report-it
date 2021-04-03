@@ -3,10 +3,17 @@ import { useState, useEffect, Fragment } from "react";
 import NoImg from "../assets/img/ImgUnavailable.jpg";
 import pageAuth from "../handler/pageAuth";
 export default function Employee() {
-  const [state, setState] = useState({ report: [] });
+  const [state, setState] = useState({
+    report: [],
+    assigned_report: sessionStorage.getItem("assigned_report"),
+  });
 
   useEffect(() => {
     pageAuth("Employee");
+    if (state.assigned_report) {
+      alert("You have work to do");
+      window.location.assign("/employee/assigned");
+    }
     const reportUrl = "http://localhost:2021/complaint";
     axios
       .get(reportUrl)
@@ -34,7 +41,7 @@ export default function Employee() {
     //   .catch((err) => {
     //     throw err;
     //   });
-  }, []);
+  }, [state.assigned_report]);
 
   const handleStatus = ({ status }) => {
     switch (status) {

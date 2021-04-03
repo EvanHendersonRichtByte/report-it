@@ -24,10 +24,13 @@ export default function Report() {
   });
 
   const handleGetReportData = () => {
-    const userComplaintUrl = `user/${state.user_id}/complaint`;
+    const userComplaintUrl = `/user/${state.user_id}/complaint`;
     axios
       .get(userComplaintUrl)
-      .then(({ data: report }) => setState((state) => ({ ...state, report })))
+      .then(({ data: report }) => {
+        report = report.filter((data) => !data.finished);
+        setState((state) => ({ ...state, report }));
+      })
       .catch((err) => console.log(err));
   };
 
@@ -97,13 +100,13 @@ export default function Report() {
         return <img src={NoImg} alt={title} className="img-fluid" />;
       default:
         return (
-          <img src={`image/${attachment}`} alt={title} className="img-fluid" />
+          <img src={`/image/${attachment}`} alt={title} className="img-fluid" />
         );
     }
   };
 
   return (
-    <div className="col-md-10">
+    <div className="col-md-12">
       <LoadingScreen />
       {state.report && <h4>No report available</h4>}
       {state.report &&
