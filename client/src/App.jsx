@@ -4,14 +4,14 @@ import { BrowserRouter, Route, Switch } from "react-router-dom";
 import Index from "./pages/Index";
 import Register from "./pages/Register";
 import Login from "./pages/Login";
-import Nav from "./layouts/Nav";
 import Report from "./pages/Report";
+import ReportHistory from "./pages/ReportHistory";
 
 // Employee
 import Dashboard from "./layouts/Dashboard";
 import Employee from "./pages/Employee";
 import AssignedEmployee from "./pages/AssignedEmployee";
-import ReportHistory from "./pages/ReportHistory";
+import EmployeeReportHistory from "./pages/EmployeeReportHistory";
 const isLogged = () => {
   let token = sessionStorage.getItem("auth-token");
   if (token) {
@@ -24,25 +24,14 @@ export default function App() {
     <BrowserRouter>
       <Switch>
         {isLogged()}
-        <Route path="/report">
-          <Nav />
-          <Report />
-        </Route>
-        <Route path="/employee/history">
-          <Dashboard>
-            <ReportHistory />
-          </Dashboard>
-        </Route>
-        <Route path="/employee/assigned">
-          <Dashboard>
-            <AssignedEmployee />
-          </Dashboard>
-        </Route>
-        <Route path="/employee">
-          <Dashboard>
-            <Employee />
-          </Dashboard>
-        </Route>
+        <Dashboard>
+          <Route path="/report/history" component={ReportHistory} />
+          <Route path="/report" component={Report} />
+          <Route path="/employee/history" component={EmployeeReportHistory} />
+          <Route path="/employee/assigned" component={AssignedEmployee} />
+          <Route path="/employee" component={Employee} />
+        </Dashboard>
+
         <Route path="/register" component={Register} />
         <Route path="/login" component={Login} />
         <Route path="/" component={Index} />

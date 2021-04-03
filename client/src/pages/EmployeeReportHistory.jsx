@@ -3,20 +3,28 @@ import { useEffect, useState } from "react";
 import NoImg from "../assets/img/ImgUnavailable.jpg";
 import pageAuth from "../handler/pageAuth";
 export default function ReportHistory() {
-  const [state, setState] = useState({
-    userId: JSON.parse(sessionStorage.getItem("id")),
-    complaints: [],
-  });
+  const [state, setState] = useState([]);
   useEffect(() => {
-    pageAuth("User");
-    const userComplaintUrl = `http://localhost:2021/user/${state.userId}/complaint`;
+    pageAuth("Employee");
+    const url = "http://localhost:2021/complaint/";
+    const employeeUrl = "http://localhost:2021/user/";
     axios
-      .get(userComplaintUrl)
-      .then(({ data: complaints }) =>
-        setState((state) => ({ ...state, complaints }))
-      )
+      .get(url)
+      .then(({ data }) => {
+        const initialData = data.filter((data) => {
+          return data.finished !== false;
+        });
+        initialData.forEach((data, index) => {
+          axios
+            .get(employeeUrl + data.employee_id)
+            .then(({ data: employeeData }) => {
+              initialData[index]["employeeName"] = employeeData.username;
+              setState(initialData);
+            });
+        });
+      })
       .catch((err) => console.log(err));
-  }, [state.userId]);
+  }, []);
 
   const handleImage = (attachment, title) => {
     switch (attachment) {
@@ -49,7 +57,7 @@ export default function ReportHistory() {
       </thead>
       <tbody>
         {state &&
-          state.complaints.map((data, index) => {
+          state.map((data, index) => {
             return (
               <tr key={index}>
                 <th scope="row" className="col-1">
