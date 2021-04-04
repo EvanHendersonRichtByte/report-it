@@ -1,5 +1,2 @@
 /*    /index.html   200
-/complaint/*  https://id-report-id.herokuapp.com/:splat 200
-/response/*  https://id-report-id.herokuapp.com/:splat 200
 /user/*  https://id-report-id.herokuapp.com/:splat 200
-/image/*  https://id-report-id.herokuapp.com/:splat 200
