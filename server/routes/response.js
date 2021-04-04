@@ -1,5 +1,5 @@
 module.exports = (app, handler, auth) => {
-  app.post("/api/response", (req, res) => {
+  app.post("/response", (req, res) => {
     Response.create(req.body, (err, response) => {
       Complaint.findOne({ _id: response.complaint_id }, (err, responseData) => {
         Complaint.updateOne(
@@ -12,12 +12,12 @@ module.exports = (app, handler, auth) => {
       });
     });
   });
-  app.get("/api/response", (req, res) => {
+  app.get("/response", (req, res) => {
     Response.find({}, (err, response) => {
       handler(res, response, "Failed to get response");
     });
   });
-  app.get("/api/response/:complaint_id", (req, res) => {
+  app.get("/response/:complaint_id", (req, res) => {
     Response.find(
       { complaint_id: req.params.complaint_id },
       (err, response) => {
@@ -25,12 +25,12 @@ module.exports = (app, handler, auth) => {
       }
     );
   });
-  app.put("/api/response/:id", (req, res) => {
+  app.put("/response/:id", (req, res) => {
     Response.updateOne({ _id: req.params.id }, req.body, () => {
       handler(res, "Response Updated", "Failed to update individual response");
     });
   });
-  app.delete("/api/response/:id", (req, res) => {
+  app.delete("/response/:id", (req, res) => {
     Response.deleteOne({ _id: req.params.id }, () => {
       handler(
         res,

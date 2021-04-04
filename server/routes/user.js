@@ -5,7 +5,7 @@ const token = (payload) => {
 };
 
 module.exports = (app, handler, auth) => {
-  app.post("/api/user", (req, res) => {
+  app.post("/user", (req, res) => {
     bcrypt.genSalt(10, (err, salt) => {
       bcrypt.hash(req.body.password, salt, (err, hash) => {
         req.body.password = hash;
@@ -19,12 +19,12 @@ module.exports = (app, handler, auth) => {
       });
     });
   });
-  app.get("/api/user", (req, res) => {
+  app.get("/user", (req, res) => {
     User.find({}, (err, data) => {
       handler(res, data, "Failed when getting users data");
     });
   });
-  app.post("/api/user/auth", (req, res) => {
+  app.post("/user/auth", (req, res) => {
     User.findOne({ email: req.body.email }, (err, data) => {
       if (data) {
         let credentialStatus = "";
@@ -41,7 +41,7 @@ module.exports = (app, handler, auth) => {
       } else res.send("data not found");
     });
   });
-  app.get("/api/user/:id", (req, res) => {
+  app.get("/user/:id", (req, res) => {
     User.findById(req.params.id)
       .populate("assigned_report")
       .populate({
@@ -50,17 +50,17 @@ module.exports = (app, handler, auth) => {
       })
       .exec((err, data) => handler(res, data, "Failed when getting user data"));
   });
-  app.put("/api/user/:id", (req, res) => {
+  app.put("/user/:id", (req, res) => {
     User.updateOne({ _id: req.params.id }, req.body, (err, data) => {
       handler(res, "user has been updated!", "Failed when updating user data");
     });
   });
-  app.delete("/api/user/:id", (req, res) => {
+  app.delete("/user/:id", (req, res) => {
     User.deleteOne({ _id: req.params.id }, (err, data) => {
       handler(res, "user has been deleted!", "Failed when deleting user data");
     });
   });
-  app.get("/api/user/:id/complaint", (req, res) => {
+  app.get("/user/:id/complaint", (req, res) => {
     Complaint.find({ author: req.params.id })
       .populate("response")
       .populate({ path: "response", populate: { path: "user_id" } })
