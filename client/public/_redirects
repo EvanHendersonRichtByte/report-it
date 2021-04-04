@@ -1,6 +1,3 @@
-/complaint/*  https://id-report-id.herokuapp.com/:splat 200
-/response/*  https://id-report-id.herokuapp.com/:splat 200
-/user/*  https://id-report-id.herokuapp.com/:splat 200
-/image/*  https://id-report-id.herokuapp.com/:splat 200
+/api/*  https://id-report-id.herokuapp.com/:splat 200
 
 /*    /index.html   200

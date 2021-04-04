@@ -26,7 +26,7 @@ const storage = new GridFsStorage({
 const upload = multer({ storage });
 
 module.exports = (app, handler, auth) => {
-  app.post("/complaint", upload.single("attachment"), (req, res) => {
+  app.post("/api/complaint", upload.single("attachment"), (req, res) => {
     if (req.file) {
       req.body.attachment_id = String(req.file.id);
       req.body["attachment"] = req.file.filename;
@@ -34,7 +34,7 @@ module.exports = (app, handler, auth) => {
     Complaint.create(req.body, (err) => handler(res, "Complaint created", err));
   });
 
-  app.get("/image/:filename", (req, res) => {
+  app.get("/api/image/:filename", (req, res) => {
     gfs.find({ filename: req.params.filename }).toArray((err, files) => {
       if (!files || files.length === 0) {
         return res.status(404).json({
@@ -45,7 +45,7 @@ module.exports = (app, handler, auth) => {
     });
   });
 
-  app.get("/complaint", (req, res) => {
+  app.get("/api/complaint", (req, res) => {
     Complaint.find({})
       .populate("author")
       .populate({
@@ -57,19 +57,19 @@ module.exports = (app, handler, auth) => {
       });
   });
 
-  app.get("/complaint/:id", (req, res) => {
+  app.get("/api/complaint/:id", (req, res) => {
     Complaint.findOne({ _id: req.params.id }, (err, complaints) =>
       handler(res, complaints, err)
     );
   });
 
-  app.put("/complaint/:id", (req, res) => {
+  app.put("/api/complaint/:id", (req, res) => {
     Complaint.updateOne({ _id: req.params.id }, req.body, () =>
       handler(res, "Complaint updated", "Cannot update complaint data")
     );
   });
 
-  app.delete("/complaint/:id", (req, res) => {
+  app.delete("/api/complaint/:id", (req, res) => {
     Complaint.findOne({ _id: req.params.id }, (err, { attachment_id }) => {
       if (attachment_id !== "x") {
         Complaint.deleteOne({ _id: req.params.id }, () => {

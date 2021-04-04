@@ -45,5 +45,5 @@
       "last 1 safari version"
     ]
   },
-  "proxy": "https://id-report-id.herokuapp.com/"
+  "proxy": "http://localhost:2021/api"
 }
