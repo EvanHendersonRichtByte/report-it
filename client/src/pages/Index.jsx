@@ -1,7 +1,6 @@
 import { Fragment, useState, useEffect } from "react";
 import axios from "axios";
 import Nav from "../layouts/Nav";
-import counterUp from "counterup2";
 import $ from "jquery";
 import {
   Form,
@@ -11,7 +10,6 @@ import {
   Select,
   Textarea,
 } from "../components/Form";
-import { Waypoint } from "react-waypoint";
 import LoadingScreen from "../layouts/LoadingScreen";
 
 export default function Index() {
@@ -128,13 +126,6 @@ export default function Index() {
     }
   };
 
-  const handleWaypointEnter = () => {
-    const counterElement = document.querySelectorAll(".counter");
-    counterElement.forEach((item) => {
-      counterUp(item, { duration: 2000 });
-    });
-  };
-
   const handleCopyrightYear = () => {
     return new Date().getFullYear();
   };
@@ -159,7 +150,6 @@ export default function Index() {
           </div>
         </div>
       </div>
-      <Waypoint onEnter={handleWaypointEnter} />
       <div className="overview container text-center">
         <div className="row">
           <div className="col-md-4">
