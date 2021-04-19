@@ -2,15 +2,17 @@ const initialState = {
   title: "",
   description: "",
   date: "",
-  city: "",
+  city: "Kota Malang",
   destInstance: "",
-  attachment: "",
+  attachment: null,
+  fileName: "",
 };
 
 const REPORT_REDUCER = (state = initialState, action) => {
   switch (action.type) {
     case "ADD_REPORT":
-      return action.payload;
+      console.log(action.payload);
+      return { ...state, ...action.payload };
     default:
       return state;
   }

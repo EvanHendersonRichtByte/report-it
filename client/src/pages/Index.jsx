@@ -2,6 +2,8 @@ import { Fragment, useState, useEffect } from "react";
 import axios from "axios";
 import Nav from "../layouts/Nav";
 import $ from "jquery";
+// import { useSelector, useDispatch } from "react-redux";
+// import { ADD_REPORT } from "../redux/actions";
 import {
   Form,
   Input,
@@ -13,6 +15,8 @@ import {
 import LoadingScreen from "../layouts/LoadingScreen";
 
 export default function Index() {
+  // const dispatch = useDispatch();
+  // const report = useSelector((state) => state.REPORT_REDUCER);
   const [state, setState] = useState({
     kota: [],
     user_id: JSON.parse(sessionStorage.getItem("id")),
@@ -50,11 +54,10 @@ export default function Index() {
 
   const getUsers = async () => {
     const storedToken = JSON.parse(sessionStorage.getItem("auth-token"));
-    const defaultToken =
-      "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJwYXlsb2FkIjoiNjA2NTI3YjZiNWVjZWUwZjljNWI5NjBlIiwiaWF0IjoxNjE3Mjk5Njc4fQ.gAbGlHHR9g92xLW5V_Q2vW3QT_K6xqXSGzd2fxQydIU";
-    const token = storedToken || defaultToken;
+    const isLogged = () =>
+      storedToken ? { token: storedToken } : { freeaccess: true };
     await axios
-      .get("/user", { headers: { token } })
+      .get("/user", { headers: isLogged() })
       .then(({ data }) =>
         setState((state) => ({ ...state, totalUsers: data.length }))
       )
@@ -101,8 +104,10 @@ export default function Index() {
   const handleDeleteFileInput = () =>
     setState((state) => ({ ...state, attachment: null, fileName: "" }));
 
-  const handleChange = (e) =>
+  const handleChange = (e) => {
+    // dispatch(ADD_REPORT({ [e.target.name]: e.target.value }));
     setState((state) => ({ ...state, [e.target.name]: e.target.value }));
+  };
 
   const handleFileChange = (e) => {
     if ($(".indexFile")[0].files.length > 0) {
@@ -113,6 +118,7 @@ export default function Index() {
           attachment: e.target.files[0],
           fileName: e.target.files[0].name,
         }));
+        // dispatch(ADD_REPORT({ attachment: e.target.files[0] }));
       } else {
         const alertElement = "#indexAlert";
         $(alertElement).removeClass("d-none");

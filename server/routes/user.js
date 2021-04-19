@@ -19,7 +19,7 @@ module.exports = (app, handler, auth) => {
       });
     });
   });
-  app.get("/user", (req, res) => {
+  app.get("/user", auth, (req, res) => {
     User.find({}, (err, data) => {
       handler(res, data, "Failed when getting users data");
     });
